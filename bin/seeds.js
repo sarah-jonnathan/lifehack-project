@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const Tags = require('../models/Tag.model');
 
-const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/library-project" || "mongodb://localhost/library-project" || "mongodb://localhost:27017/library-project";
+const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/lifehack-project" || "mongodb://localhost/lifehack-project" || "mongodb://localhost:27017/lifehack-project";
 
 mongoose
   .connect(MONGO_URI)
