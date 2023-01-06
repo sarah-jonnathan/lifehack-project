@@ -3,18 +3,17 @@ const Lifehack = require("../models/Lifehack.model")
 const User = require("../models/User.model")
 const Tag = require("../models/Tag.model")
 
-// Display all LH
+// read: Display all LH
 router.get("/lifehacks",(req,res,next)=>{
     Lifehack.find().populate("tags")
         .then((lifehacksArray)=>{
-            console.log(lifehacksArray[0].tags[0])
-            
+                      
             res.render("lifehacks/lifehacks-list",{lifehacksArray})
         })
         .catch(err=>console.log(`we have an error...`,err))
 })
-//diplay create form
 
+//read: create form
 router.get("/lifehacks/create",(req,res,next)=>{
     Tag.find()
         .then(tagsArray=>{
@@ -26,6 +25,7 @@ router.get("/lifehacks/create",(req,res,next)=>{
     
     
 })
+//post: create form
 router.post("/lifehacks/create",(req,res,next)=>{
 
     
@@ -50,6 +50,19 @@ router.post("/lifehacks/create",(req,res,next)=>{
         })
     
     
+})
+//read: display details of a LH
+router.get("/lifehacks/:lifehackId",(req,res,next)=>{
+    const lifehackId = req.params.lifehackId
+    Lifehack.findById(lifehackId).populate("tags")
+        .then(lifehack=>{
+            
+            res.render("lifehacks/lifehack-details",lifehack)
+        })
+        .catch(err=>{
+            console.log("there has been an error==>",err)
+        })
+
 })
 
 module.exports =router

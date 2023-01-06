@@ -1,0 +1,14 @@
+
+
+<section>
+    <h2>{{title}}</h2>
+    <h4>{{author.name}}</h4>
+    {{#each tags}}
+        <span><a href="/tags/{{this._id}}">{{this.name}}</a></span>
+    {{/each}}
+    <hr>
+    <p>{{description}}</p>
+    <h3>multimedia:{{embedMultimedia}}</h3>
+    <h4>likes: {{likes}}</h4>
+
+</section>

@@ -2,13 +2,13 @@
 {{#each lifehacksArray}}
     <div>
         <h1>{{this.title}}</h2>
-        <h2>tags:</h2>
-        {{#each this.tags}}
-            <h3>{{this.name}}</h3>
-        {{/each}} 
+        {{#each tags}}
+            <span><a href="/tags/{{this._id}}">{{this.name}}</a></span>
+        {{/each}}
 
         <p>{{this.description}}</p>
         <h3>multimedia: {{this.embedMultimedia}}</h3>
+        <a href="/lifehacks/{{this._id}}">more...</a>
 
     </div>
 <hr>
