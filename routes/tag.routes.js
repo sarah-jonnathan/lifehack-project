@@ -17,11 +17,9 @@ router.get("/tags", (req, res, next) => {
 
 // List all LH with a specific tag
 router.get("/tags/:tagId", (req, res, next) => {
-    console.log(req.params.tagId);
     const ObjectId = req.params.tagId;
     Lifehack.find({tags: ObjectId})
       .then((allLH) => {
-        console.log(allLH);
         res.render("tags/lifehacks", {allLH});
       })
       .catch(error => {
