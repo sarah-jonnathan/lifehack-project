@@ -6,9 +6,9 @@ const Tag = require("../models/Tag.model")
 // read: Display all LH
 router.get("/lifehacks",(req,res,next)=>{
     Lifehack.find().populate("tags")
-        .then((lifehacksArray)=>{
+        .then((allLH)=>{
                       
-            res.render("lifehacks/lifehacks-list",{lifehacksArray})
+            res.render("lifehacks/lifehacks-list",{allLH})
         })
         .catch(err=>console.log(`we have an error...`,err))
 })
@@ -22,8 +22,6 @@ router.get("/lifehacks/create",(req,res,next)=>{
         .catch(err=>{
             console.log("there has been an error===>",err)
         })
-    
-    
 })
 //post: create form
 router.post("/lifehacks/create",(req,res,next)=>{
