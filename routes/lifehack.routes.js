@@ -119,8 +119,8 @@ router.post("/lifehacks/:lifehackId/edit",(req,res,next)=>{
     }
 
     Lifehack.findByIdAndUpdate(lifeHackId,newLifehackData)
-        .then((newLifehack)=>{
-            res.redirect(`/lifehacks/${newLifehack._id}`)
+        .then((LifehackUpdated)=>{
+            res.redirect(`/lifehacks/${LifehackUpdated._id}`)
             
         })
         .catch(err=>{
@@ -128,6 +128,19 @@ router.post("/lifehacks/:lifehackId/edit",(req,res,next)=>{
         })
     
     
+})
+router.post(`/lifehacks/:lifehackId/delete`,(req,res,next)=>{
+    const lifehackId=req.params.lifehackId
+    console.log(lifehackId)
+    Lifehack.findByIdAndDelete(lifehackId)
+        .then(()=>{
+            
+            res.redirect("/lifehacks")
+
+        })
+        .catch(err=>{
+            console.log(`there has been an error==>`,err)
+        })
 })
 
 module.exports =router
