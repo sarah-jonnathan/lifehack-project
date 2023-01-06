@@ -13,7 +13,7 @@ router.get("/lifehacks",(req,res,next)=>{
         .catch(err=>console.log(`we have an error...`,err))
 })
 
-//read: create form
+//read: create new lH form
 router.get("/lifehacks/create",(req,res,next)=>{
     Tag.find()
         .then(tagsArray=>{
@@ -23,7 +23,7 @@ router.get("/lifehacks/create",(req,res,next)=>{
             console.log("there has been an error===>",err)
         })
 })
-//post: create form
+//post: create new lH in DB
 router.post("/lifehacks/create",(req,res,next)=>{
 
     
@@ -101,6 +101,33 @@ router.get("/lifehacks/:lifehackId/edit",(req,res,next)=>{
             console.log("there has been an error==>",err)
         })
 
+})
+
+//post: update LH in DB
+router.post("/lifehacks/:lifehackId/edit",(req,res,next)=>{
+
+    const lifeHackId =req.params.lifehackId
+    const userInSession =  req.session.currentUser
+   
+
+    const newLifehackData = {
+        title: req.body.title,
+        description:req.body.description,
+        embedMultimedia:req.body.embedMultimedia,
+        tags:req.body.tags,
+          
+    }
+
+    Lifehack.findByIdAndUpdate(lifeHackId,newLifehackData)
+        .then((newLifehack)=>{
+            res.redirect(`/lifehacks/${newLifehack._id}`)
+            
+        })
+        .catch(err=>{
+            console.log("there has been an error===>",err)
+        })
+    
+    
 })
 
 module.exports =router
