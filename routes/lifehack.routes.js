@@ -5,15 +5,16 @@ const Tag = require("../models/Tag.model")
 
 // Display all LH
 router.get("/lifehacks",(req,res,next)=>{
-    Lifehack.find()
+    Lifehack.find().populate("tags")
         .then((lifehacksArray)=>{
-            console.log(lifehacksArray)
+            console.log(lifehacksArray[0].tags[0])
             
             res.render("lifehacks/lifehacks-list",{lifehacksArray})
         })
         .catch(err=>console.log(`we have an error...`,err))
 })
 //diplay create form
+
 router.get("/lifehacks/create",(req,res,next)=>{
     Tag.find()
         .then(tagsArray=>{

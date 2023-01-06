@@ -1,8 +1,12 @@
 <h2>Lifehacks list</h2>
 {{#each lifehacksArray}}
     <div>
-        <h2>{{this.title}}</h2>
-        //show the tags       
+        <h1>{{this.title}}</h2>
+        <h2>tags:</h2>
+        {{#each this.tags}}
+            <h3>{{this.name}}</h3>
+        {{/each}} 
+
         <p>{{this.description}}</p>
         <h3>multimedia: {{this.embedMultimedia}}</h3>
 
