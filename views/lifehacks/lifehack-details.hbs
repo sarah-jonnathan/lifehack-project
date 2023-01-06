@@ -8,7 +8,7 @@
     {{/each}}
     <hr>
     <p>{{description}}</p>
-    <h3>multimedia:{{embedMultimedia}}</h3>
+    <img src="{{embedMultimedia}}" alt="{{name}}" style="width: 300px"><br />
     <h4>likes: {{likes}}</h4>
     <a href="/lifehacks/{{this._id}}/edit">edit</a>
     <form action="/lifehacks/{{this._id}}/delete" method="POST">

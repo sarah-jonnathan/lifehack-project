@@ -8,7 +8,7 @@ router.get("/lifehacks",(req,res,next)=>{
     Lifehack.find().populate("tags")
         .then((allLH)=>{
                       
-            res.render("lifehacks/lifehacks-list",{allLH})
+            res.render("lifehacks/lifehacks-list",{allLH,fromAllList:true})
         })
         .catch(err=>console.log(`we have an error...`,err))
 })

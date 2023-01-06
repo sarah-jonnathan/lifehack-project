@@ -38,15 +38,21 @@ router.get("/tags", (req, res, next) => {
 
 // List all LH with a specific tag
 router.get("/tags/:tagId", (req, res, next) => {
-  const ObjectId = req.params.tagId;
-  Lifehack.find({ tags: ObjectId }).populate("tags")
-    .then((allLH) => {
-      res.render("lifehacks/lifehacks-list", { allLH });
-    })
-    .catch((error) => {
-      console.log("Error while searching for All Lifehacks by tag: ", error);
-      next(error);
-    });
+    const objectId = req.params.tagId;
+    let tagObject=null
+    Tag.findById(objectId)
+        .then((response)=>{
+            tagObject=response
+            return Lifehack.find({ tags: objectId }).populate("tags")
+        })
+        .then((allLH) => {
+            
+            res.render("lifehacks/lifehacks-list", { allLH,fromTaglist:true,tagObject});
+         })
+        .catch((error) => {
+            console.log("Error while searching for All Lifehacks by tag: ", error);
+        next(error);
+        });
 });
 
 module.exports = router

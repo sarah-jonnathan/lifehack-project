@@ -1,15 +1,25 @@
-<h2>Lifehacks list</h2>
-{{#each allLH}}
-    <div>
-        <h1>{{this.title}}</h2>
-        {{#each tags}}
-            <span>TAGS: <a href="/tags/{{this._id}}">{{this.name}}</a></span>
-        {{/each}}
+{{#if allLH}}
+    {{#if fromAllList}}
+        <h2>All Lifehacks </h2>
+    {{else if fromTaglist }}
+        <h1>All LH's with tag "{{tagObject.name}}" in our DB:</h1>
+    {{/if}}
 
-        <p>{{this.description}}</p>
-        <h3>multimedia: {{this.embedMultimedia}}</h3>
-        <a href="/lifehacks/{{this._id}}">more...</a>
-        <a href="/lifehacks/{{this._id}}/edit">edit</a>
-    </div>
-<hr>
-{{/each}}
+    {{#each allLH}}
+        <div>
+            <h1>{{this.title}}</h2>
+            {{#each tags}}
+                <span><a href="/tags/{{this._id}}"> #{{this.name}} </a></span>
+            {{/each}}
+            <br>
+
+            <img src="{{this.embedMultimedia}}" alt="{{this.name}}" style="width: 150px"><br />
+
+            <a href="/lifehacks/{{this._id}}">more...</a>
+            <a href="/lifehacks/{{this._id}}/edit">edit</a>
+        </div>
+        <hr>
+    {{/each}}
+{{else}}
+    <h3>Sorry, no LH with that tag in the DB</h3>
+{{/if}}
