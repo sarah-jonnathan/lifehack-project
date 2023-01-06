@@ -62,5 +62,45 @@ router.get("/lifehacks/:lifehackId",(req,res,next)=>{
         })
 
 })
+//read: display edit form
+router.get("/lifehacks/:lifehackId/edit",(req,res,next)=>{
+    const lifehackId = req.params.lifehackId
+    const data = {}
+    Lifehack.findById(lifehackId).populate("tags")
+        .then(lifehack=>{
+            data.lifehack=lifehack
+
+          
+          return Tag.find() 
+        })
+        .then(tagsArray=>{
+            data.tagsArray=tagsArray
+
+            const tagsNotSelected = tagsArray.filter((tag) => {
+                let counter = 0;
+                data.lifehack.tags.forEach((tagSelected) => {
+                  if (tag._id.toString() ===  tagSelected._id.toString()) {
+                    counter++;
+                  }
+                });
+                if (counter >= 1) {
+                  return false;
+                } else {
+                  return true;
+                }
+              });
+              data.tagsNotSelected= tagsNotSelected
+            
+
+
+
+
+            res.render("lifehacks/lifehack-edit",data)
+        })
+        .catch(err=>{
+            console.log("there has been an error==>",err)
+        })
+
+})
 
 module.exports =router
