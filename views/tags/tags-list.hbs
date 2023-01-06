@@ -1,0 +1,23 @@
+<h1>Tags in our DB:</h1>
+
+{{#if tags}}
+    <section>
+        {{#each tags}}
+            <h2>{{this.name}}</h2>
+            <p>
+                <img src="{{this.img}}" alt="{{this.name}}" style="width: 150px"><br />
+                
+                <a href="/tags/{{this._id}}">View all LH's with this tag</a> || 
+                <a href="/tags/{{this._id}}/edit">Edit</a>
+                {{!-- add the form to handle the POST request to remove a specific tag  --}}
+                {{#if userDetails}}
+                    <form action="/tags/{{_id}}/delete" method="POST">
+                        <button>Delete</button>
+                    </form>
+                {{/if}}
+            </p>
+        {{/each}}
+    </section>
+{{else}}
+    <h3>Sorry, no TAGS in the DB</h3>
+{{/if}}

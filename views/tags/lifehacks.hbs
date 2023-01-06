@@ -1,0 +1,17 @@
+{{#if allLH}}
+<h1>All LH's with tag ({{this.name}}) in our DB:</h1>
+    <section>
+        {{#each allLH}}
+            <h2>{{this.title}}</h2>
+            <p>
+                <img src="{{this.img}}" alt="{{this.name}}" style="width: 150px"><br />
+                <p>{{this.description}}</p>
+                <h3>multimedia: {{this.embedMultimedia}}</h3>
+                <a href="/tags/{{_id}}">View all LH's with this tag</a>
+                <a href="/tags/{{_id}}/edit">Edit</a>
+            </p>
+        {{/each}}
+    </section>
+{{else}}
+    <h3>Sorry, no LH with that tag in the DB</h3>
+{{/if}}
