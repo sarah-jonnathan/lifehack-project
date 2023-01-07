@@ -1,2 +1,6 @@
 <h1>{{appTitle}} 🚀</h1>
-<p>Welcome Ironhacker! - User: {{userInSession.username}}</p>
+{{#if userInSession}}
+    <p>Welcome {{userInSession.username}}</p>
+{{else}}
+    <p>Welcome Ironhacker!</p>
+{{/if}}

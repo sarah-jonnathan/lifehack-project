@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Lifehack = require("../models/Lifehack.model")
 const User = require("../models/User.model")
 const Tag = require("../models/Tag.model")
-
+const isLoggedIn = require("../middleware/isLoggedIn")
 // read: Display all LH
 router.get("/lifehacks",(req,res,next)=>{
     Lifehack.find().populate("tags")
@@ -14,7 +14,7 @@ router.get("/lifehacks",(req,res,next)=>{
 })
 
 //read: create new lH form
-router.get("/lifehacks/create",(req,res,next)=>{
+router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
     Tag.find()
         .then(tagsArray=>{
             res.render("lifehacks/lifehack-create",{tagsArray})
@@ -24,7 +24,7 @@ router.get("/lifehacks/create",(req,res,next)=>{
         })
 })
 //post: create new lH in DB
-router.post("/lifehacks/create",(req,res,next)=>{
+router.post("/lifehacks/create",isLoggedIn,(req,res,next)=>{
 
     
     const userInSession =  req.session.currentUser
@@ -63,7 +63,7 @@ router.get("/lifehacks/:lifehackId",(req,res,next)=>{
 
 })
 //read: display edit form
-router.get("/lifehacks/:lifehackId/edit",(req,res,next)=>{
+router.get("/lifehacks/:lifehackId/edit",isLoggedIn,(req,res,next)=>{
     const lifehackId = req.params.lifehackId
     const data = {}
     Lifehack.findById(lifehackId).populate("tags")
@@ -104,7 +104,7 @@ router.get("/lifehacks/:lifehackId/edit",(req,res,next)=>{
 })
 
 //post: update LH in DB
-router.post("/lifehacks/:lifehackId/edit",(req,res,next)=>{
+router.post("/lifehacks/:lifehackId/edit",isLoggedIn,(req,res,next)=>{
 
     const lifeHackId =req.params.lifehackId
     const userInSession =  req.session.currentUser
@@ -129,7 +129,7 @@ router.post("/lifehacks/:lifehackId/edit",(req,res,next)=>{
     
     
 })
-router.post(`/lifehacks/:lifehackId/delete`,(req,res,next)=>{
+router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,(req,res,next)=>{
     const lifehackId=req.params.lifehackId
     console.log(lifehackId)
     Lifehack.findByIdAndDelete(lifehackId)
