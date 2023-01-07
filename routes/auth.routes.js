@@ -82,7 +82,8 @@ router.post("/signup", isLoggedOut, (req, res) => {
 
 // GET /login
 router.get("/login", isLoggedOut, (req, res) => {
-  res.render("auth/login");
+  
+  res.render("auth/login",{userInSession: req.session.currentUser});
 });
 
 // POST /login
