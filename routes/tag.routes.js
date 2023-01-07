@@ -29,7 +29,6 @@ router.post('/tags/create', isAdmin, fileUploader.single('img'), (req, res, next
 router.get("/tags", isAdmin, (req, res, next) => {
     if (req.session.currentUser.isAdmin === true) {
       const is_admin = true;
-      console.log(is_admin);
     }
     Tag.find()
         .then(tags => {
@@ -63,11 +62,10 @@ router.get("/tags/:tagId", (req, res, next) => {
     });
 });
 
-// Display TAG edit form
+// GET: Display TAG edit form
 router.get("/tags/:tagId/edit", isAdmin, (req, res, next) => {
   const tagId = req.params.tagId;
   const data = {};
-  let warning;
   Lifehack.find({ tags: tagId })
     .then((lifehack) => {
       data.lifehack = lifehack;
@@ -77,7 +75,6 @@ router.get("/tags/:tagId/edit", isAdmin, (req, res, next) => {
       } else {
         res.locals.warning = "There are no LH's in DB associated to this Tag."
       }
-      console.log(data.lifehack);
       return Tag.findById(tagId);      
     })
     .then((tagDetails) => {
@@ -86,6 +83,19 @@ router.get("/tags/:tagId/edit", isAdmin, (req, res, next) => {
     })
     .catch((error) => {
       console.log("Error trying to get tag to edit", error);
+    });
+});
+
+// POST: Update Tag details in DB
+router.post("/tags/:tagId/edit", isAdmin, fileUploader.single('img'), (req, res, next) => {
+  const tagId = req.params.tagId;
+  const { name, img } = req.body;
+  const imgFilePath = req.file.path;
+
+  Tag.findByIdAndUpdate(tagId, {name, img: imgFilePath })
+    .then(() => res.redirect(`/tags`))
+    .catch((error) => {
+      console.log("Error updating Tag", error);
     });
 });
 
