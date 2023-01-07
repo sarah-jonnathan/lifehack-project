@@ -3,6 +3,7 @@ const Lifehack = require("../models/Lifehack.model")
 const User = require("../models/User.model")
 const Tag = require("../models/Tag.model")
 const isLoggedIn = require("../middleware/isLoggedIn")
+const mwFunctions = require("../middleware/middlewareFunctions")
 // read: Display all LH
 router.get("/lifehacks",(req,res,next)=>{
     Lifehack.find().populate("tags")
@@ -24,7 +25,7 @@ router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
         })
 })
 //post: create new lH in DB
-router.post("/lifehacks/create",isLoggedIn,(req,res,next)=>{
+router.post("/lifehacks/create",isLoggedIn,mwFunctions.urlImgValidator,(req,res,next)=>{
 
     
     const userInSession =  req.session.currentUser
@@ -142,5 +143,7 @@ router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,(req,res,next)=>{
             console.log(`there has been an error==>`,err)
         })
 })
+
+
 
 module.exports =router
