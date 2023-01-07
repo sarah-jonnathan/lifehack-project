@@ -35,8 +35,6 @@ const urlImgValidator = async function(req,res,next){
 
 
 }
-const mwFunctions={
-    urlImgValidator
-}
 
-module.exports = mwFunctions
+
+module.exports = urlImgValidator

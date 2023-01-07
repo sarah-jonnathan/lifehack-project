@@ -3,7 +3,7 @@ const Lifehack = require("../models/Lifehack.model")
 const User = require("../models/User.model")
 const Tag = require("../models/Tag.model")
 const isLoggedIn = require("../middleware/isLoggedIn")
-const mwFunctions = require("../middleware/middlewareFunctions")
+const urlImgValidator = require("../middleware/urlImgValidator")
 // read: Display all LH
 router.get("/lifehacks",(req,res,next)=>{
    
@@ -26,7 +26,7 @@ router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
         })
 })
 //post: create new lH in DB
-router.post("/lifehacks/create",isLoggedIn,mwFunctions.urlImgValidator,(req,res,next)=>{
+router.post("/lifehacks/create",isLoggedIn,urlImgValidator,(req,res,next)=>{
 
     
     const userInSession =  req.session.currentUser
@@ -106,7 +106,7 @@ router.get("/lifehacks/:lifehackId/edit",isLoggedIn,(req,res,next)=>{
 })
 
 //post: update LH in DB
-router.post("/lifehacks/:lifehackId/edit",isLoggedIn,mwFunctions.urlImgValidator,(req,res,next)=>{
+router.post("/lifehacks/:lifehackId/edit",isLoggedIn,urlImgValidator,(req,res,next)=>{
 
     const lifeHackId =req.params.lifehackId
     const userInSession =  req.session.currentUser
