@@ -27,7 +27,7 @@ const MongoStore = require("connect-mongo");
 
 // ℹ️ Will load all of Bootstrap’s plugins onto a bootstrap object
 // To install: npm install bootstrap@5.2.3
-const bootstrap = require("bootstrap");
+//const bootstrap = require("bootstrap");
 
 // Connects the mongo uri to maintain the same naming structure
 const MONGO_URI =
