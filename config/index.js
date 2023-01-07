@@ -25,6 +25,10 @@ const session = require("express-session");
 // https://www.npmjs.com/package/connect-mongo
 const MongoStore = require("connect-mongo");
 
+// ℹ️ Will load all of Bootstrap’s plugins onto a bootstrap object
+// To install: npm install bootstrap@5.2.3
+const bootstrap = require("bootstrap");
+
 // Connects the mongo uri to maintain the same naming structure
 const MONGO_URI =
   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/lifehack-project";
