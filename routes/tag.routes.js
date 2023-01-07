@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Tag = require("../models/Tag.model");
 const Lifehack = require("../models/Lifehack.model")
 const User = require("../models/User.model");
+const isLoggedIn = require('../middleware/isLoggedIn');
 
 // ********* require fileUploader in order to use it *********
 const fileUploader = require('../config/cloudinary.config');
@@ -38,21 +39,36 @@ router.get("/tags", (req, res, next) => {
 
 // List all LH with a specific tag
 router.get("/tags/:tagId", (req, res, next) => {
-    const objectId = req.params.tagId;
-    let tagObject=null
-    Tag.findById(objectId)
-        .then((response)=>{
-            tagObject=response
-            return Lifehack.find({ tags: objectId }).populate("tags")
-        })
-        .then((allLH) => {
-            
-            res.render("lifehacks/lifehacks-list", { allLH,fromTaglist:true,tagObject});
-         })
-        .catch((error) => {
-            console.log("Error while searching for All Lifehacks by tag: ", error);
-        next(error);
-        });
+  const objectId = req.params.tagId;
+  let tagObject = null;
+  Tag.findById(objectId)
+    .then((response) => {
+      tagObject = response;
+      return Lifehack.find({ tags: objectId }).populate("tags");
+    })
+    .then((allLH) => {
+      res.render("lifehacks/lifehacks-list", {
+        allLH,
+        fromTaglist: true,
+        tagObject,
+      });
+    })
+    .catch((error) => {
+      console.log("Error while searching for All Lifehacks by tag: ", error);
+      next(error);
+    });
+});
+
+/* POST route to delete a TAG from the database */
+router.post("/tags/:tagId/delete", (req, res, next) => {
+  const { tagId } = req.params;
+
+  Tag.findByIdAndDelete(tagId)
+    .then(() => res.redirect("/tags"))
+    .catch((error) => {
+      console.log("Error deleting a TAG from DB", error);
+      next();
+    });
 });
 
 module.exports = router

@@ -19,20 +19,26 @@ const app = express();
 require("./config")(app);
 
 const capitalize = require("./utils/capitalize");
-const projectName = "lifehack-project";
+const projectName = "Raccoons to the Rescue";
 
 app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher`;
 
 // 👇 Start handling routes here
+// store session
+app.use( (req, res, next) => {
+    app.locals.userDetails = req.session.currentUser; //store user details in app.locals (so that is is available in handlebars)
+    next();
+});
+
 //index routes
-const indexRoutes = require("./routes/index.routes");
-app.use("/", indexRoutes);
+app.use("/", require("./routes/index.routes"));
 
 //auth routes
-const authRoutes = require("./routes/auth.routes");
-app.use("/", authRoutes);
+app.use("/", require("./routes/auth.routes"));
+
 // lifehack routes
 app.use("/", require("./routes/lifehack.routes"))
+
 // tag routes
 app.use("/", require("./routes/tag.routes"))
 

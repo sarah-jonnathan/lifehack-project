@@ -10,11 +10,11 @@
                 <a href="/tags/{{this._id}}">View all LH's with this tag</a> || 
                 <a href="/tags/{{this._id}}/edit">Edit</a>
                 {{!-- add the form to handle the POST request to remove a specific tag  --}}
-                {{#if userDetails}}
-                    <form action="/tags/{{_id}}/delete" method="POST">
+                
+                    <form action="/tags/{{this._id}}/delete" method="POST">
                         <button>Delete</button>
                     </form>
-                {{/if}}
+                
             </p>
         {{/each}}
     </section>
