@@ -14,6 +14,7 @@ const User = require("../models/User.model");
 // Require necessary (isLoggedOut and isLoggedIn) middleware in order to control access to specific routes
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
+const Lifehack = require("../models/Lifehack.model");
 
 // GET /signup
 router.get("/signup", isLoggedOut, (req, res) => {
@@ -153,5 +154,20 @@ router.get("/logout", isLoggedIn, (req, res) => {
     res.redirect("/");
   });
 });
+//GET /profile
+router.get("/profile",isLoggedIn,(req,res,next)=>{
 
+  const userId = req.session.currentUser._id
+  const data ={}
+  Lifehack.find({author: userId})
+    .then(lifehacksPosted=>{
+      
+      data.lifehacksPosted =lifehacksPosted
+      res.render("users/user-profile",data)
+    })
+    .catch(err=>{
+      console.log(`there was an error in the profile page=>${err}`)
+      next(err)
+    })
+})
 module.exports = router;

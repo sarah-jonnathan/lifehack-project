@@ -1,0 +1,49 @@
+<h2>Welcome to your profile {{userDetails.username}}</h2>
+
+
+
+
+
+
+
+
+
+
+{{!-- lifehacks the user posted --}}
+<div>
+<ul>
+<h5>lifehacks you posted</h5>
+ {{#each lifehacksPosted}}
+ <div class="all-lh-profile">
+    <li  class="lh-container-profile" style="list-style-type:none"> 
+              
+        <a class="link-container" href="{{baseUrl}}/lifehacks/{{this._id}}">
+            <div class="image-lh-profile-container">
+                <img class="img-lh-profile" src="{{this.embedMultimedia}}" alt="img">
+            </div> 
+            <div class="title-lh-profile-container">
+                {{this.title}}
+            </div>
+        </a>
+        <div class="btn-profile-container">        
+            <form action="{{baseUrl}}/lifehacks/{{this._id}}/edit" method="get">
+                <button type="submit">edit</button>
+            </form>
+        </div>
+        <div class="btn-profile-container">
+            <form action="{{baseUrl}}/lifehacks/{{this._id}}/delete" method="post">
+                <button type="submit">delete</button>
+            </form>
+        </div>       
+    </li>
+ </div>
+ {{/each}}   
+</ul>
+
+</div>
+
+<div>
+    <ul>
+        <h5>lifehacks you like</h5>
+    </ul>
+</div>
