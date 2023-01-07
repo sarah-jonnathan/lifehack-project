@@ -44,15 +44,21 @@
                 {{/each}}
               </ul>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Register</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Logout</a>
-            </li>
+            {{#if userDetails}}
+              <li class="nav-item">
+                <a class="nav-link" href="{{baseUrl}}/profile">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{baseUrl}}/logout">Logout</a>
+              </li>
+            {{else}}
+              <li class="nav-item">
+                <a class="nav-link" href="{{baseUrl}}/signup">Register</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{baseUrl}}/login">Login</a>
+              </li>
+            {{/if}}
           </ul>
         </div>
       </div>

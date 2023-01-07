@@ -8,7 +8,7 @@ const urlImgValidator = async function(req,res,next){
     try{
         const response = await axios.head(url)
 
-        console.log(`a ver que nos mandan======>`,response.headers[`content-type`])
+        
         if(response.headers['content-type'].startsWith("image")){
              console.log(`the url is valid for an img`)
              next()
