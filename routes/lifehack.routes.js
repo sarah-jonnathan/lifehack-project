@@ -6,6 +6,7 @@ const isLoggedIn = require("../middleware/isLoggedIn")
 const mwFunctions = require("../middleware/middlewareFunctions")
 // read: Display all LH
 router.get("/lifehacks",(req,res,next)=>{
+   
     Lifehack.find().populate("tags")
         .then((allLH)=>{
                       
@@ -53,7 +54,7 @@ router.post("/lifehacks/create",isLoggedIn,mwFunctions.urlImgValidator,(req,res,
 //read: display details of a LH
 router.get("/lifehacks/:lifehackId",(req,res,next)=>{
     const lifehackId = req.params.lifehackId
-    Lifehack.findById(lifehackId).populate("tags")
+    Lifehack.findById(lifehackId).populate(["tags","author"])
         .then(lifehack=>{
             
             res.render("lifehacks/lifehack-details",lifehack)
@@ -105,7 +106,7 @@ router.get("/lifehacks/:lifehackId/edit",isLoggedIn,(req,res,next)=>{
 })
 
 //post: update LH in DB
-router.post("/lifehacks/:lifehackId/edit",isLoggedIn,(req,res,next)=>{
+router.post("/lifehacks/:lifehackId/edit",isLoggedIn,mwFunctions.urlImgValidator,(req,res,next)=>{
 
     const lifeHackId =req.params.lifehackId
     const userInSession =  req.session.currentUser
@@ -131,12 +132,17 @@ router.post("/lifehacks/:lifehackId/edit",isLoggedIn,(req,res,next)=>{
     
 })
 router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,(req,res,next)=>{
+    const lastUrl= req.headers.referer
     const lifehackId=req.params.lifehackId
-    console.log(lifehackId)
-    Lifehack.findByIdAndDelete(lifehackId)
+               
+        Lifehack.findByIdAndDelete(lifehackId)
         .then(()=>{
-            
-            res.redirect("/lifehacks")
+            if(lastUrl.endsWith(`profile`)){
+                res.redirect(lastUrl)
+                
+            }else{
+                res.redirect("/lifehacks")
+            }
 
         })
         .catch(err=>{

@@ -2,7 +2,7 @@
 
 <section>
     <h2>{{title}}</h2>
-    <h4>{{author.name}}</h4>
+    <h6>Author: {{author.username}}</h6>
     {{#each tags}}
         <span><a href="/tags/{{this._id}}">{{this.name}}</a></span>
     {{/each}}
