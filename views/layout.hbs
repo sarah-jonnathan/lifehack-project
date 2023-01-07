@@ -39,8 +39,8 @@
               </a>
               <ul class="dropdown-menu">
                 <!-- Display Array of Tags -->
-                {{#each tags}}
-                <li><a class="dropdown-item" href="/tags/{{tagId}}">{{this.name}}</a></li>
+                {{#each tagsArray}}
+                  <li><a class="dropdown-item" href="/tags/{{this._id}}">{{this.name}}</a></li>
                 {{/each}}
               </ul>
             </li>

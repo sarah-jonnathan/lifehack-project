@@ -17,7 +17,7 @@ const app = express();
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);
-
+const getTags = require("./middleware/getTags")
 const capitalize = require("./utils/capitalize");
 const projectName = "Raccoons to the Rescue";
 
@@ -25,7 +25,7 @@ app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher and 
 
 // 👇 Start handling routes here
 // store session and get baseURL for links across the website
-app.use( (req, res, next) => {
+app.use( getTags,(req, res, next) => {
     app.locals.userDetails = req.session.currentUser; //store user details in app.locals (so that is is available in handlebars)
     // get baseURL
     app.locals.baseURL = req.protocol + "://" + req.hostname + ":" + process.env.PORT;
