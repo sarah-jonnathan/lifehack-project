@@ -21,7 +21,7 @@ require("./config")(app);
 const capitalize = require("./utils/capitalize");
 const projectName = "Raccoons to the Rescue";
 
-app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher`;
+app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher and edited by Jonnathan and Sarah`;
 
 // 👇 Start handling routes here
 // store session and get baseURL for links across the website
