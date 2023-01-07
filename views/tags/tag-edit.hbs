@@ -1,0 +1,18 @@
+{{!-- views/tags/tag-edit.hbs --}}
+
+<h2>Edit a Tag</h2>
+
+<p>{{warning}}</p>
+<p><img src="{{baseURL}}/{{tagDetails.img}}" alt="{{tagDetails.name}}" style="width: 150px"></p>
+
+<form action="/tags/{{tagDetails._id}}/edit" method="post" enctype="multipart/form-data">
+  <label> Name:
+    <input type="text" name="name" value="{{tagDetails.name}}" />
+  </label>
+
+  <label> Image:
+    <input type="file" name="img" />
+  </label>
+
+  <button type="submit"> Edit </button>
+</form>
