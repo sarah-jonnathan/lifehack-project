@@ -5,6 +5,8 @@
         <h1>All LH's with tag "{{tagObject.name}}" in our DB:</h1>
     {{/if}}
 
+
+
     {{#each allLH}}
         <div>
             <h1>{{this.title}}</h2>
@@ -16,7 +18,11 @@
             <img src="{{this.embedMultimedia}}" alt="{{this.name}}" style="width: 150px"><br />
 
             <a href="/lifehacks/{{this._id}}">more...</a>
-            <a href="/lifehacks/{{this._id}}/edit">edit</a>
+          
+            {{#equal ../userDetails._id this.author}}
+                <a href="/lifehacks/{{this._id}}/edit">edit</a>
+            {{/equal}}
+            
         </div>
         <hr>
     {{/each}}

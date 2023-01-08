@@ -10,9 +10,13 @@
     <p>{{description}}</p>
     <img src="{{embedMultimedia}}" alt="{{name}}" style="width: 300px"><br />
     <h4>likes: {{likes}}</h4>
-    <a href="/lifehacks/{{this._id}}/edit">edit</a>
-    <form action="/lifehacks/{{this._id}}/delete" method="POST">
-        <button>Delete</button>
-    </form>
+    
+    {{#equal userDetails._id author._id}}
+        <a href="/lifehacks/{{this._id}}/edit">edit</a>
+        <form action="/lifehacks/{{this._id}}/delete" method="POST">
+            <button>Delete</button>
+        </form>
+    {{/equal}}
+
 
 </section>

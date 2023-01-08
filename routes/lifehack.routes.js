@@ -1,9 +1,17 @@
 const router = require("express").Router();
+const app =require("../app")
 const Lifehack = require("../models/Lifehack.model")
 const User = require("../models/User.model")
 const Tag = require("../models/Tag.model")
+
+//require middleware functions
 const isLoggedIn = require("../middleware/isLoggedIn")
 const urlImgValidator = require("../middleware/urlImgValidator")
+const isLifeHackAuthoredByUser = require("../middleware/isLifehackAuthoredByUser")
+
+//require Utils
+const compareIds=require("../utils/compareIds")
+
 // read: Display all LH
 router.get("/lifehacks",(req,res,next)=>{
    
@@ -12,7 +20,7 @@ router.get("/lifehacks",(req,res,next)=>{
                       
             res.render("lifehacks/lifehacks-list",{allLH,fromAllList:true})
         })
-        .catch(err=>console.log(`we have an error...`,err))
+        .catch(error=>console.log(`there was an error getting all the LF...`,error))
 })
 
 //read: create new lH form
@@ -21,8 +29,8 @@ router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
         .then(tagsArray=>{
             res.render("lifehacks/lifehack-create",{tagsArray})
         })
-        .catch(err=>{
-            console.log("there has been an error===>",err)
+        .catch(error=>{
+            console.log("there has been an error getting the tags===>",error)
         })
 })
 //post: create new lH in DB
@@ -45,8 +53,8 @@ router.post("/lifehacks/create",isLoggedIn,urlImgValidator,(req,res,next)=>{
             res.redirect("/lifehacks")
             
         })
-        .catch(err=>{
-            console.log("there has been an error===>",err)
+        .catch(error=>{
+            console.log("there has been an error creating the lifehack===>",error)
         })
     
     
@@ -59,20 +67,20 @@ router.get("/lifehacks/:lifehackId",(req,res,next)=>{
             
             res.render("lifehacks/lifehack-details",lifehack)
         })
-        .catch(err=>{
-            console.log("there has been an error==>",err)
+        .catch(error=>{
+            console.log("there has been an error getting the details of the LH==>",error)
         })
 
 })
 //read: display edit form
-router.get("/lifehacks/:lifehackId/edit",isLoggedIn,(req,res,next)=>{
+router.get("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,(req,res,next)=>{
     const lifehackId = req.params.lifehackId
+    const userDetails = req.session.currentUser
     const data = {}
     Lifehack.findById(lifehackId).populate("tags")
-        .then(lifehack=>{
-            data.lifehack=lifehack
-
-          
+    .then(lifehack=>{
+        data.lifehack=lifehack     
+                 
           return Tag.find() 
         })
         .then(tagsArray=>{
@@ -99,18 +107,21 @@ router.get("/lifehacks/:lifehackId/edit",isLoggedIn,(req,res,next)=>{
 
             res.render("lifehacks/lifehack-edit",data)
         })
-        .catch(err=>{
-            console.log("there has been an error==>",err)
+        .catch(error=>{
+            console.log("there has been an error in the get request to edit the LH==>",error)
+            
+            next(error)
         })
 
 })
 
 //post: update LH in DB
-router.post("/lifehacks/:lifehackId/edit",isLoggedIn,urlImgValidator,(req,res,next)=>{
+router.post("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,urlImgValidator,(req,res,next)=>{
 
     const lifeHackId =req.params.lifehackId
     const userInSession =  req.session.currentUser
-   
+    
+    
 
     const newLifehackData = {
         title: req.body.title,
@@ -125,13 +136,13 @@ router.post("/lifehacks/:lifehackId/edit",isLoggedIn,urlImgValidator,(req,res,ne
             res.redirect(`/lifehacks/${LifehackUpdated._id}`)
             
         })
-        .catch(err=>{
-            console.log("there has been an error===>",err)
+        .catch(error=>{
+            console.log("there has been an error editing the LH===>",error)
         })
     
     
 })
-router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,(req,res,next)=>{
+router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,isLifeHackAuthoredByUser,(req,res,next)=>{
     const lastUrl= req.headers.referer
     const lifehackId=req.params.lifehackId
                
@@ -145,8 +156,8 @@ router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,(req,res,next)=>{
             }
 
         })
-        .catch(err=>{
-            console.log(`there has been an error==>`,err)
+        .catch(error=>{
+            console.log(`there has been an error deleting the LH==>`,error)
         })
 })
 
