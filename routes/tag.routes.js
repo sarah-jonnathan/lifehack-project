@@ -34,9 +34,9 @@ router.get("/tags", isAdmin, (req, res, next) => {
         .then(tags => {
             res.render("tags/tags-list", { tags });
         })
-        .catch(err => {
-            console.log('Error getting tags from DB...', err);
-            next(err);
+        .catch(error => {
+            console.log('Error getting tags from DB...', error);
+            next(error);
         })
 });
 

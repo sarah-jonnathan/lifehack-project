@@ -33,8 +33,12 @@ const projectName = "Raccoons to the Rescue";
 
 app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher and edited by Jonnathan and Sarah`;
 
+
+
 // 👇 Start handling routes here
+
 // store session and get baseURL for links across the website
+// getTags store all the tags in res.locals.tagsArray
 app.use( getTags,(req, res, next) => {
     app.locals.userDetails = req.session.currentUser; //store user details in app.locals (so that is is available in handlebars)
     // get baseURL

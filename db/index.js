@@ -14,6 +14,6 @@ mongoose
     const databaseName = x.connections[0].name;
     console.log(`Connected to Mongo! Database name: "${databaseName}"`);
   })
-  .catch((err) => {
-    console.error("Error connecting to mongo: ", err);
+  .catch((error) => {
+    console.error("Error connecting to mongo: ", error);
   });

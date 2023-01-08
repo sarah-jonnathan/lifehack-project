@@ -138,16 +138,16 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 
           res.redirect("/");
         })
-        .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
+        .catch((error) => next(error)); // In this case, we send error handling to the error handling middleware.
     })
-    .catch((err) => next(err));
+    .catch((error) => next(error));
 });
 
 // GET /logout
 router.get("/logout", isLoggedIn, (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      res.status(500).render("auth/logout", { errorMessage: err.message });
+  req.session.destroy((error) => {
+    if (error) {
+      res.status(500).render("auth/logout", { errorMessage: error.message });
       return;
     }
 
@@ -165,9 +165,9 @@ router.get("/profile",isLoggedIn,(req,res,next)=>{
       data.lifehacksPosted =lifehacksPosted
       res.render("users/user-profile",data)
     })
-    .catch(err=>{
-      console.log(`there was an error in the profile page=>${err}`)
-      next(err)
+    .catch(error=>{
+      console.log(`there was an error in the profile page=>${error}`)
+      next(error)
     })
 })
 module.exports = router;

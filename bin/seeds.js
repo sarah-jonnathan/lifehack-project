@@ -11,8 +11,8 @@ mongoose
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
     );
   })
-  .catch((err) => {
-    console.error("Error connecting to mongo: ", err);
+  .catch((error) => {
+    console.error("Error connecting to mongo: ", error);
   });
 
 const tags = [
@@ -58,4 +58,4 @@ Promise.all([tagsPromise])
     mongoose.connection.close();
 
   })
-  .catch( e => console.log("error seeding data in DB....", e));
+  .catch( error => console.log("error seeding data in DB....", error));
