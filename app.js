@@ -15,11 +15,13 @@ const hbs = require("hbs");
 
 // register a new custom helper for handlebars (now {{`equal` value1 value2}} returns true when value1==value2)
 hbs.registerHelper('equal', function(value1, value2, options) {
-    
-    if( value1.toString()===value2.toString() ) {
-        return options.fn(this);
-    } else {
-        return options.inverse(this);
+    if(value1 && value2){
+        
+        if( value1.toString()===value2.toString() ) {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
     }
 });
 
