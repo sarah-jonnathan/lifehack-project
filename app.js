@@ -13,6 +13,16 @@ const express = require("express");
 // https://www.npmjs.com/package/hbs
 const hbs = require("hbs");
 
+// register a new custom helper for handlebars (now {{`equal` value1 value2}} returns true when value1==value2)
+hbs.registerHelper('equal', function(value1, value2, options) {
+    
+    if( value1.toString()===value2.toString() ) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
+
 const app = express();
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
