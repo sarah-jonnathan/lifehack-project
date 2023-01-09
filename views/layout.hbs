@@ -32,6 +32,11 @@
             <li class="nav-item">
               <a class="nav-link" href="{{baseURL}}/lifehacks">Lifehacks</a>
             </li>
+            {{#if userDetails}}
+              <li class="nav-item">
+                <a class="nav-link" href="{{baseURL}}/lifehacks/create">Add a Lifehack</a>
+              </li>
+            {{/if}}
             <!-- If Tags show dropdown -->
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
