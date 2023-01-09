@@ -90,13 +90,20 @@ router.get("/tags/:tagId/edit", isAdmin, (req, res, next) => {
 router.post("/tags/:tagId/edit", isAdmin, fileUploader.single('img'), (req, res, next) => {
   const tagId = req.params.tagId;
   const { name, img } = req.body;
-  const imgFilePath = req.file.path;
-
-  Tag.findByIdAndUpdate(tagId, {name, img: imgFilePath })
+  if (!img) {
+    Tag.findByIdAndUpdate(tagId, {name })
     .then(() => res.redirect(`/tags`))
     .catch((error) => {
       console.log("Error updating Tag", error);
     });
+  } else {
+    const imgFilePath = req.file.path;
+    Tag.findByIdAndUpdate(tagId, {name, img: imgFilePath })
+    .then(() => res.redirect(`/tags`))
+    .catch((error) => {
+      console.log("Error updating Tag", error);
+    });
+  }
 });
 
 /* POST route to delete a TAG from the database */
