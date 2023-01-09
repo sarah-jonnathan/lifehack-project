@@ -10,13 +10,17 @@
         <div class="row">
 
     {{#each allLH}}
-        <div class="col-sm">
+        <div class="col mb-4">
             <div class="card">
-                <img src="{{this.embedMultimedia}}" alt="{{this.name}}" class="card-img-top">
-                <div class="card-body">
-                    <h3 class="grey">{{this.title}}</h3>
+                <div class="ratio ratio-1x1">
+                
+                    <img src="{{this.embedMultimedia}}" alt="{{this.name}}" class="card-img-top embed-responsive-item">
+
                 </div>
                 <div class="card-body">
+                    <h4 class="grey text-truncate">{{this.title}}</h3>
+                </div>
+                <div class="card-tag">
                 {{#each tags}}
                     <span><a href="/tags/{{this._id}}" class="tags"> #{{this.name}} </a></span>
                 {{/each}}
