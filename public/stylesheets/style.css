@@ -72,9 +72,73 @@ a.logout:hover {
   background-image: linear-gradient(#a80303, #790303);
 }
 
+.delete {
+  color: #fff !important;
+  text-decoration: none;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, .3) 0 5px 15px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif;
+  font-size: .9em;
+  margin: 5px 0;
+  padding: 5px 15px;
+  text-align: center;
+  align-self: center;
+  margin-top: 0px;
+  background-image: linear-gradient(#c50404, #930303);
+}
+
+.delete:hover {
+  color: #fff !important;
+  background-image: linear-gradient(#a80303, #790303);
+}
+
 a.tags {
   color: #333;
   padding: 5px 0 0 0;
+}
+
+.likes {
+  background: url('https://res.cloudinary.com/dsw3axyzs/image/upload/v1673276082/love_ktn7fv.png') center no-repeat;
+  background-size: contain;
+  color: transparent;
+  text-decoration: none;
+  padding: 15px 26px;
+  position: relative;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+.likes:hover {
+  background-color: transparent;
+}
+
+.likes .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+}
+
+.btm-lh-display {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between
+}
+
+.btm-item {
+  align-items: stretch;
+}
+
+.align-r {
+  text-align: right;
 }
 
 .lh-list-img {
