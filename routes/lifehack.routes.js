@@ -12,11 +12,13 @@ const cloudinary = require('cloudinary').v2;
 const isLoggedIn = require("../middleware/isLoggedIn")
 const urlImgValidator = require("../middleware/urlImgValidator")
 const isLifeHackAuthoredByUser = require("../middleware/isLifehackAuthoredByUser")
+const getDefaultImg =require("../middleware/getDefaultImg")
 
 //require Utils
 const compareIds=require("../utils/compareIds")
 const getCloudinaryIDfromUrl=require("../utils/getCloudinaryIDfromUrl");
 const deleteOldImg = require("../utils/deleteOldImg");
+const isDefaultImage=require("../utils/isDefaultImage")
 
 // read: Display all LH
 router.get("/lifehacks",(req,res,next)=>{
@@ -41,22 +43,19 @@ router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
         })
 })
 //post: create new lH in DB
-router.post("/lifehacks/create",isLoggedIn,urlImgValidator,fileUploader.single('image01'),(req,res,next)=>{
+router.post("/lifehacks/create",isLoggedIn,urlImgValidator,fileUploader.single('image01'),getDefaultImg,(req,res,next)=>{
 
     
     const userInSession =  req.session.currentUser
-    let imageUploadUrl=null
-    
-    if(!req.file){
-        
-    }else{
-        imageUploadUrl= req.file.path
-    }
-    
+
+   //store img link of cloudinary 
+    let imageUploadUrl = req.file ? req.file.path : null;
+
+
     const newLifehackData = {
         title: req.body.title,
         description:req.body.description,
-        embedMultimedia: imageUploadUrl || req.body.embedMultimedia,
+        embedMultimedia: imageUploadUrl || req.body.embedMultimedia || res.locals.defaultImgUrl,
         tags:req.body.tags,
         author:  userInSession._id      
     }
@@ -150,12 +149,21 @@ router.post("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,ur
 
         if(lastImageUrl[0].startsWith("https://res.cloudinary")){
             
-            const fileNameId = getCloudinaryIDfromUrl(lastImageUrl[0])
-            
-            deleteOldImg(fileNameId)
+            //check if the image is from a Tag, if it is we dont erase it 
+            const isTagImage= isDefaultImage(lastImageUrl[0],res.locals.tagsArray)
+            if(isTagImage){
+                console.log(`we can not erase a default image`)
+                
+            }else{
+                console.log(`the last imag was erased from the DB`)
+                const fileNameId = getCloudinaryIDfromUrl(lastImageUrl[0])
+                
+                deleteOldImg(fileNameId)
+            }
         }
-    }
+       
 
+        }
     const newLifehackData = {
         title: req.body.title,
         description:req.body.description,

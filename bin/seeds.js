@@ -18,31 +18,31 @@ mongoose
 const tags = [
   {
     name: "Parenting",
-    img: ["./images/tags/parenting01.jpg"]
+    img: "https://res.cloudinary.com/dsw3axyzs/image/upload/v1673270573/lifehack-project/xnmd8omdixegoikddt6c.jpg"
   },
   {
     name: "Food",
-    img: ["./images/tags/food01.jpg"]
+    img: "https://res.cloudinary.com/dsw3axyzs/image/upload/v1673270804/lifehack-project/cpbwm9a71rnoclih6bpc.jpg"
   },
   {
     name: "Cleaning",
-    img: ["./images/tags/cleaning01.jpg"]
+    img: "https://res.cloudinary.com/dsw3axyzs/image/upload/v1673270648/lifehack-project/wgpnasbjgtwkvb52vktb.jpg"
   },
   {
     name: "DIY",
-    img: ["./images/tags/diy01.jpg"]
+    img: "https://res.cloudinary.com/dsw3axyzs/image/upload/v1673270910/lifehack-project/kimfcxcdlszqpae5tq9k.jpg"
   },
   {
     name: "Animals",
-    img: ["./images/tags/animals01.jpg"]
+    img: "https://res.cloudinary.com/dsw3axyzs/image/upload/v1673270693/lifehack-project/wadygvv9altdlncz08fu.jpg"
   },
   {
     name: "Tech",
-    img: ["./images/tags/tech01.jpg"]
+    img: "https://res.cloudinary.com/dsw3axyzs/image/upload/v1673270863/lifehack-project/u95ybpipkferflutswuz.jpg"
   },
   {
     name: "Miscellaneous",
-    img: ["./images/tags/misc01.jpg"]
+    img: "https://res.cloudinary.com/dsw3axyzs/image/upload/v1673270754/lifehack-project/inqnkeirb0vrrpfrdxwa.jpg"
   }
 ];
 

@@ -7,9 +7,10 @@ const tagsSchema = new Schema({
         required: true
     },
     img: {
-        type: [String],
+        type: String,
         required: true
     }
+   
 });
 
 const Tags = mongoose.model("Tags", tagsSchema); // create model Pizza
