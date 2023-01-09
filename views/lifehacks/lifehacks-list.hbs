@@ -18,10 +18,10 @@
             <img src="{{this.embedMultimedia}}" alt="{{this.name}}" style="width: 150px"><br />
 
             <a href="/lifehacks/{{this._id}}">more...</a>
-          
-            {{#equal ../userDetails._id this.author}}
+            
+            {{#equalOrTrue ../userDetails._id this.author ../userDetails.isAdmin}}
                 <a href="/lifehacks/{{this._id}}/edit">edit</a>
-            {{/equal}}
+            {{/equalOrTrue}}
             
         </div>
         <hr>
