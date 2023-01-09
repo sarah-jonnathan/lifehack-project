@@ -11,7 +11,7 @@
 
   <body>
     
-    <nav class="navbar navbar-light navbar-inverse fixed-top navbar-expand-lg bg-light">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid d-flex">
         <a class="navbar-brand" href="{{baseURL}}">
           <img src="https://res.cloudinary.com/dsw3axyzs/image/upload/v1673092584/raccoon7_wrzwm2.png" alt="Logo" width="30" height="24"
@@ -24,8 +24,8 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <!-- Navbar collapsible -->
-        <div class="collapse navbar-collapse justify-content-end"" id="navbarNav">
-          <ul class="navbar-nav me-auto justify-content-end">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav me-auto my-2 my-lg-0 justify-content-end">
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="{{baseURL}}">Home</a>
             </li>
@@ -45,16 +45,19 @@
               <ul class="dropdown-menu">
                 <!-- Display Array of Tags -->
                 {{#each tagsArray}}
-                  <li><a class="dropdown-item" href="/tags/{{this._id}}">{{this.name}}</a></li>
+                  <li class="dropdown-item">
+                    <a class="nav-link" href="/tags/{{this._id}}">{{this.name}}</a>
+                  </li>
                 {{/each}}
               </ul>
             </li>
+            <li><hr class="dropdown-divider"></li>
             {{#if userDetails}}
               <li class="nav-item">
                 <a class="nav-link" href="{{baseUrl}}/profile">Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{baseUrl}}/logout">Logout</a>
+                <a class="nav-link btn logout" href="{{baseUrl}}/logout">Logout</a>
               </li>
             {{else}}
               <li class="nav-item">

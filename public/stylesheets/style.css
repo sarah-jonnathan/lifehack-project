@@ -1,31 +1,97 @@
-/* *{
-  border: 1px solid black;
-} */
-body {
+
+@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+
+body, html {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Quicksand", "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
+a:link, a:active, a:visited {
   color: #00b7ff;
 }
 
-h1 {
-  color: 15px;
+a:hover {
+  color: #0277a6;
+  text-decoration: none;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  color: #00b7ff;
+}
+
+.grey {
+  color: #333;
+}
+
+/**** GENERAL LAYOUT ****/
+.btn {
+  background-image: linear-gradient(#00b7ff, #0277a6);
+  text-decoration: none;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, .3) 0 5px 15px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif;
+  font-size: .9em;
+  margin: 5px 0;
+  padding: 5px 15px;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+a.btn {
+  color: #fff
+}
+
+a.btn:hover {
+  background-image: linear-gradient(#0598d3, #046085);
+}
+
+.edit {
+  background-image: linear-gradient(#04c547, #039327);
+}
+
+a.edit:hover {
+  background-image: linear-gradient(#04a33b, #027a20);
+}
+
+a.logout:link, a.logout:active {
+  color: #fff !important;
+  font-size: 1em;
+  align-self: center;
+  box-shadow: rgba(0, 0, 0, .3) 0 0 0;
+  margin-top: 0px;
+  background-image: linear-gradient(#c50404, #930303);
+}
+
+a.logout:hover {
+  background-image: linear-gradient(#a80303, #790303);
+}
+
+a.tags {
+  color: #333;
+  padding: 5px 0 0 0;
+}
+
+.lh-list-img {
+  max-width: fit-content;
+  max-height: min-content;
+}
+
 /**** PROFILE *****/
-
-
 .all-lh-profile {  
   background-color: rgba(126, 125, 125, 0.281);
-  }
-.lh-container-profile{  
+}
+
+.lh-container-profile {  
   display: flex;
  
 }
 
-
-.link-container{
+.link-container {
   display: flex;
   flex-direction: row;
   margin:0.5rem;
@@ -33,8 +99,8 @@ h1 {
   height: 50px;
   
 }
-.image-lh-profile-container{
-  
+
+.image-lh-profile-container {
   width:50px;
   height:50px;
   overflow: hidden;
@@ -47,16 +113,14 @@ h1 {
   width: 100%;
   height: 100%;
 }
-.title-lh-profile-container{
-  
-  margin-left:1rem;
-  height:50px;
+.title-lh-profile-container {
+  margin-left: 1rem;
+  height: 50px;
   line-height: 50px;
   text-align: center;
 }
+
 .btn-profile-container{
   display: flex;
   align-items: center;
-
- 
 }

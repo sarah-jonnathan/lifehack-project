@@ -1,31 +1,38 @@
 {{#if allLH}}
     {{#if fromAllList}}
-        <h2>All Lifehacks </h2>
+        
     {{else if fromTaglist }}
-        <h1>All LH's with tag "{{tagObject.name}}" in our DB:</h1>
+        <h2>{{tagObject.name}} Lifehacks</h2>
     {{/if}}
 
 
+    <div class="container-fluid">
+        <div class="row">
 
     {{#each allLH}}
-        <div>
-            <h1>{{this.title}}</h2>
-            {{#each tags}}
-                <span><a href="/tags/{{this._id}}"> #{{this.name}} </a></span>
-            {{/each}}
-            <br>
-
-            <img src="{{this.embedMultimedia}}" alt="{{this.name}}" style="width: 150px"><br />
-
-            <a href="/lifehacks/{{this._id}}">more...</a>
-            
-            {{#equalOrTrue ../userDetails._id this.author ../userDetails.isAdmin}}
-                <a href="/lifehacks/{{this._id}}/edit">edit</a>
-            {{/equalOrTrue}}
-            
+        <div class="col-sm">
+            <div class="card">
+                <img src="{{this.embedMultimedia}}" alt="{{this.name}}" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="grey">{{this.title}}</h3>
+                </div>
+                <div class="card-body">
+                {{#each tags}}
+                    <span><a href="/tags/{{this._id}}" class="tags"> #{{this.name}} </a></span>
+                {{/each}}
+                </div>
+                <div class="card-body">
+                    <a href="/lifehacks/{{this._id}}" class="btn">More</a>
+                {{#equalOrTrue ../userDetails._id this.author ../userDetails.isAdmin}}
+                    <a href="/lifehacks/{{this._id}}/edit" class="btn edit">Edit</a>
+                {{/equalOrTrue}}
+                </div>
+            </div>
         </div>
-        <hr>
     {{/each}}
+        
+        </div>
+    </div>
 {{else}}
-    <h3>Sorry, no LH with that tag in the DB</h3>
+    <h3>Sorry, couldn't find any Lifehacks with that Tag...</h3>
 {{/if}}
