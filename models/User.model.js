@@ -20,10 +20,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    isAdmin:{
-      type:Boolean,
-      default:false
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
+    postsLiked: {
+      type: [Schema.Types.ObjectId],
+      ref: "Likes"
+    }
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
