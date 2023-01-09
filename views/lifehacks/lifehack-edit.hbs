@@ -1,7 +1,7 @@
 
 <h2>Edit lifehack</h2>
 
-<form action="/lifehacks/{{lifehack._id}}/edit" method="post">
+<form action="/lifehacks/{{lifehack._id}}/edit" method="post" enctype="multipart/form-data">
 
     <label>Title:
         <input type="text" value="{{lifehack.title}}" name="title">
@@ -10,8 +10,11 @@
         <textarea name="description" cols="30" rows="4">{{lifehack.description}}</textarea>
     </label>
     {{!-- bonus let the user put more than one url --}}
-    <label>:multimedia url:
+    <label>img url:
         <input type="url" value="{{lifehack.embedMultimedia}}"  name="embedMultimedia"> 
+    </label>
+     <label>Upload an img:
+        <input type="file" name="image01"> 
     </label>
     
 

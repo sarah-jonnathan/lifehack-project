@@ -24,6 +24,8 @@ hbs.registerHelper('equal', function(value1, value2, options) {
         }
     }
 });
+
+// register a new custom helper for handlebars (now {{`equalOrTrue` value1 value2 value3}} returns true when value1==value2 or value3 is true)
 hbs.registerHelper('equalOrTrue', function(value1, value2,value3, options) {
     if(value1 && value2 || value3){
         

@@ -4,6 +4,10 @@ const Lifehack = require("../models/Lifehack.model")
 const User = require("../models/User.model")
 const Tag = require("../models/Tag.model")
 
+// ********* require fileUploader in order to use it *********
+const fileUploader = require('../config/cloudinary.config');
+const cloudinary = require('cloudinary').v2;
+
 //require middleware functions
 const isLoggedIn = require("../middleware/isLoggedIn")
 const urlImgValidator = require("../middleware/urlImgValidator")
@@ -11,6 +15,8 @@ const isLifeHackAuthoredByUser = require("../middleware/isLifehackAuthoredByUser
 
 //require Utils
 const compareIds=require("../utils/compareIds")
+const getCloudinaryIDfromUrl=require("../utils/getCloudinaryIDfromUrl");
+const deleteOldImg = require("../utils/deleteOldImg");
 
 // read: Display all LH
 router.get("/lifehacks",(req,res,next)=>{
@@ -25,6 +31,7 @@ router.get("/lifehacks",(req,res,next)=>{
 
 //read: create new lH form
 router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
+
     Tag.find()
         .then(tagsArray=>{
             res.render("lifehacks/lifehack-create",{tagsArray})
@@ -34,16 +41,22 @@ router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
         })
 })
 //post: create new lH in DB
-router.post("/lifehacks/create",isLoggedIn,urlImgValidator,(req,res,next)=>{
+router.post("/lifehacks/create",isLoggedIn,urlImgValidator,fileUploader.single('image01'),(req,res,next)=>{
 
     
     const userInSession =  req.session.currentUser
-   
-
+    let imageUploadUrl=null
+    
+    if(!req.file){
+        
+    }else{
+        imageUploadUrl= req.file.path
+    }
+    
     const newLifehackData = {
         title: req.body.title,
         description:req.body.description,
-        embedMultimedia:req.body.embedMultimedia,
+        embedMultimedia: imageUploadUrl || req.body.embedMultimedia,
         tags:req.body.tags,
         author:  userInSession._id      
     }
@@ -76,11 +89,14 @@ router.get("/lifehacks/:lifehackId",(req,res,next)=>{
 router.get("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,(req,res,next)=>{
     const lifehackId = req.params.lifehackId
     const userDetails = req.session.currentUser
+
+
     const data = {}
     Lifehack.findById(lifehackId).populate("tags")
     .then(lifehack=>{
         data.lifehack=lifehack     
-                 
+        //we storage this here to compare in the post request
+        req.session.urlCloudinary = data.lifehack.embedMultimedia
           return Tag.find() 
         })
         .then(tagsArray=>{
@@ -116,17 +132,34 @@ router.get("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,(re
 })
 
 //post: update LH in DB
-router.post("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,urlImgValidator,(req,res,next)=>{
+router.post("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,urlImgValidator,fileUploader.single('image01'),(req,res,next)=>{
 
     const lifeHackId =req.params.lifehackId
     const userInSession =  req.session.currentUser
+    let imageUploadUrl=null
+    const lastImageUrl=req.session.urlCloudinary
     
     
+
+    //checks if we are  uploading a new image
+    if(req.file||req.body.embedMultimedia!==lastImageUrl[0]){//we are uploading a new image
+        if(req.file){
+
+            imageUploadUrl= req.file.path
+        }
+
+        if(lastImageUrl[0].startsWith("https://res.cloudinary")){
+            
+            const fileNameId = getCloudinaryIDfromUrl(lastImageUrl[0])
+            
+            deleteOldImg(fileNameId)
+        }
+    }
 
     const newLifehackData = {
         title: req.body.title,
         description:req.body.description,
-        embedMultimedia:req.body.embedMultimedia,
+        embedMultimedia:imageUploadUrl||req.body.embedMultimedia,
         tags:req.body.tags,
           
     }

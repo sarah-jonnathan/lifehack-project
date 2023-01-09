@@ -1,6 +1,6 @@
 <h2>Create a new lifehack</h2>
 
-<form action="/lifehacks/create" method="post">
+<form action="/lifehacks/create" method="post" enctype="multipart/form-data">
     <label>Title:
         <input type="text" name="title">
     </label>
@@ -11,6 +11,10 @@
     <label>:multimedia url:
         <input type="url" name="embedMultimedia"> 
     </label>
+    <label>Upload an img:
+        <input type="file" name="image01"> 
+    </label>
+
     
 
     <select name="tags"  multiple>
