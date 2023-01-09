@@ -11,9 +11,9 @@
                 </div>
                 <div class="card-body btm-lh-display w-100">
                     <div class="btm-item">
-                        <a href="#" class="likes">
-                            <span class="badge">{{likes}}</span>
-                        </a>
+                        <form action="/lifehacks/{{this._id}}" method="POST">
+                            <button class="likes"><span class="badge">{{likes}}</span></button>
+                        </form>
                     </div>
                     <div class="btm-item">
                         {{#each tags}}

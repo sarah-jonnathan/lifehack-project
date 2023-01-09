@@ -101,7 +101,7 @@ a.tags {
   padding: 5px 0 0 0;
 }
 
-.likes {
+button.likes {
   background: url('https://res.cloudinary.com/dsw3axyzs/image/upload/v1673276082/love_ktn7fv.png') center no-repeat;
   background-size: contain;
   color: transparent;
@@ -110,10 +110,14 @@ a.tags {
   position: relative;
   display: inline-block;
   border-radius: 5px;
+  border: none;
+  outline: none;
 }
 
-.likes:hover {
+button.likes:hover {
   background-color: transparent;
+  border: none;
+  outline: none;
 }
 
 .likes .badge {

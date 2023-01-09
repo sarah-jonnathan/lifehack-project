@@ -195,5 +195,15 @@ router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,isLifeHackAuthoredByUser,
 })
 
 
+router.post(`/lifehacks/:lifehackId`, (req, res, next) => {
+    const lifehackId = req.params.lifehackId;
+    Lifehack.findOneAndUpdate({_id: lifehackId}, {$inc: {likes: 1}})
+    .then(() => {
+        res.redirect(`/lifehacks/${lifehackId}`);
+    })
+    .catch(error => {
+        console.log(`There has been an error updating the likes in the DB`,error)
+    })
+})
 
-module.exports =router
+module.exports = router;
