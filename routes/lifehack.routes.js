@@ -239,15 +239,20 @@ router.post(`/lifehacks/:lifehackId`, (req, res, next) => {
                         return true;
                     }
                 })
-                // User has liked the post, do not add to DB or increment
+                // User has liked the post, remove from postsLiked array and remove 1 like
                 if (isLikedByUser === true) {
+                    const removeLhFromUser = User.findByIdAndUpdate({_id: userId}, {$pull: {postsLiked: lifehackId}});
+                    const removeLike = Lifehack.findByIdAndUpdate({_id: lifehackId}, {$inc: {likes: -1}});
                     res.locals.warning = "You have already liked this post"; // not working now??
-                    res.redirect(`/lifehacks/${lifehackId}`)
+                    Promise.all([removeLhFromUser, removeLike])
+                        .then((result) => {
+                            res.redirect(`/lifehacks/${lifehackId}`)
+                        })
                 } 
                 // User has NOT liked the post, add to DB AND increment
                 else {
                     const addLhToUser = User.findByIdAndUpdate({_id: userId}, {$push: {postsLiked: lifehackId}});
-                    const addLike = Lifehack.findOneAndUpdate({_id: lifehackId}, {$inc: {likes: 1}});
+                    const addLike = Lifehack.findByIdAndUpdate({_id: lifehackId}, {$inc: {likes: 1}});
                     Promise.all([addLhToUser, addLike])
                         .then((result) => {
                             res.redirect(`/lifehacks/${lifehackId}`)
