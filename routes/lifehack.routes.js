@@ -205,14 +205,38 @@ router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,isLifeHackAuthoredByUser,
 
 
 router.post(`/lifehacks/:lifehackId`, (req, res, next) => {
-    const lifehackId = req.params.lifehackId;
-    Lifehack.findOneAndUpdate({_id: lifehackId}, {$inc: {likes: 1}})
-    .then(() => {
-        res.redirect(`/lifehacks/${lifehackId}`);
-    })
-    .catch(error => {
-        console.log(`There has been an error updating the likes in the DB`,error)
-    })
-})
+  const lifehackId = req.params.lifehackId;
+
+  // check if there is a user
+  if (req.session.currentUser) {
+    const userId = req.session.currentUser._id;
+    // Check if this user has liked this LH
+    User.findOne({ postsLiked: lifehackId })
+      .then((result) => {
+        // If LH id is not in postsLiked, ADD it and increment likes by 1
+        if (result === null) {
+          const addLhToUser = User.findByIdAndUpdate(
+            { _id: userId },
+            { $push: { postsLiked: lifehackId } }
+          );
+          const addLike = Lifehack.findOneAndUpdate(
+            { _id: lifehackId },
+            { $inc: { likes: 1 } }
+          );
+          Promise.all([addLhToUser, addLike]).then((result) => {
+            res.redirect(`/lifehacks/${lifehackId}`);
+          });
+        // Or show message
+        } else {
+          res.locals.warning("You have already liked this post!");
+        }
+      })
+      .catch((error) => {
+        console.log(`There has been an error updating the likes in the DB`, error);
+      });
+  } else {
+    res.locals.warning(`Please Login or Register to like a Lifehack`);
+  }
+});
 
 module.exports = router;
