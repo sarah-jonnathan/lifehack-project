@@ -16,8 +16,8 @@ const getDefaultImg= function(req,res,next){
         }else if( typeof myIdTags==="string"){
             myIdTagsArray.push(myIdTags)
         }else{
+            console.log(`0 tags selected`)
            next() 
-           console.log(`0 tags selected`)
         }
         
         //compare the ids of the tags selected with all the tags in the DB

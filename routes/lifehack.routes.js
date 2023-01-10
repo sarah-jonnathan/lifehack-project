@@ -18,7 +18,8 @@ const getDefaultImg =require("../middleware/getDefaultImg")
 const compareIds=require("../utils/compareIds")
 const getCloudinaryIDfromUrl=require("../utils/getCloudinaryIDfromUrl");
 const deleteOldImg = require("../utils/deleteOldImg");
-const isDefaultImage=require("../utils/isDefaultImage")
+const isDefaultImage=require("../utils/isDefaultImage");
+const removeImageUnlessTagDefault = require("../utils/removeImageUnlessTagDefault");
 
 // read: Display all LH
 router.get("/lifehacks",(req,res,next)=>{
@@ -26,7 +27,10 @@ router.get("/lifehacks",(req,res,next)=>{
     Lifehack.find().populate("tags")
         .then((allLH)=>{
                       
-            res.render("lifehacks/lifehacks-list",{allLH,fromAllList:true})
+            res.render("lifehacks/lifehacks-list",{
+                allLH,
+                fromAllList:true
+            })
         })
         .catch(error=>console.log(`there was an error getting all the LF...`,error))
 })
@@ -93,9 +97,11 @@ router.get("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,(re
     const data = {}
     Lifehack.findById(lifehackId).populate("tags")
     .then(lifehack=>{
-        data.lifehack=lifehack     
+        data.lifehack=lifehack   
+
         //we storage this here to compare in the post request
         req.session.urlCloudinary = data.lifehack.embedMultimedia
+
           return Tag.find() 
         })
         .then(tagsArray=>{
@@ -114,12 +120,9 @@ router.get("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,(re
                   return true;
                 }
               });
-              data.tagsNotSelected= tagsNotSelected
+              
+            data.tagsNotSelected= tagsNotSelected
             
-
-
-
-
             res.render("lifehacks/lifehack-edit",data)
         })
         .catch(error=>{
@@ -131,43 +134,33 @@ router.get("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,(re
 })
 
 //post: update LH in DB
-router.post("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,urlImgValidator,fileUploader.single('image01'),(req,res,next)=>{
+router.post("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,urlImgValidator,fileUploader.single('image01'),getDefaultImg,(req,res,next)=>{
 
     const lifeHackId =req.params.lifehackId
     const userInSession =  req.session.currentUser
     let imageUploadUrl=null
-    const lastImageUrl=req.session.urlCloudinary
-    
+    const lastImageUrl=req.session.urlCloudinary[0]
+    const tagsObjArray=res.locals.tagsArray
     
 
     //checks if we are  uploading a new image
-    if(req.file||req.body.embedMultimedia!==lastImageUrl[0]){//we are uploading a new image
+    if(req.file||req.body.embedMultimedia!==lastImageUrl){//we are uploading a new image
         if(req.file){
 
             imageUploadUrl= req.file.path
         }
+        
+        removeImageUnlessTagDefault(lastImageUrl,tagsObjArray)
+           
 
-        if(lastImageUrl[0].startsWith("https://res.cloudinary")){
-            
-            //check if the image is from a Tag, if it is we dont erase it 
-            const isTagImage= isDefaultImage(lastImageUrl[0],res.locals.tagsArray)
-            if(isTagImage){
-                console.log(`we can not erase a default image`)
-                
-            }else{
-                console.log(`the last imag was erased from the DB`)
-                const fileNameId = getCloudinaryIDfromUrl(lastImageUrl[0])
-                
-                deleteOldImg(fileNameId)
-            }
-        }
-       
+    }
 
-        }
+
+    
     const newLifehackData = {
         title: req.body.title,
         description:req.body.description,
-        embedMultimedia:imageUploadUrl||req.body.embedMultimedia,
+        embedMultimedia:imageUploadUrl||req.body.embedMultimedia||res.locals.defaultImgUrl,
         tags:req.body.tags,
           
     }
@@ -186,9 +179,17 @@ router.post("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,ur
 router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,isLifeHackAuthoredByUser,(req,res,next)=>{
     const lastUrl= req.headers.referer
     const lifehackId=req.params.lifehackId
+    const tagsObjArray=res.locals.tagsArray
+    let lastImageUrl=''
+    
                
         Lifehack.findByIdAndDelete(lifehackId)
-        .then(()=>{
+        .then((response)=>{
+            lastImageUrl=response.embedMultimedia[0]
+            
+            
+            removeImageUnlessTagDefault(lastImageUrl,tagsObjArray)
+            
             if(lastUrl.endsWith(`profile`)){
                 res.redirect(lastUrl)
                 
