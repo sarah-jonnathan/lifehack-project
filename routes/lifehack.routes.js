@@ -81,7 +81,7 @@ router.get("/lifehacks/random-lifehack",(req,res,next)=>{
         .then(numberOfLifehacks=>{
             const randomNum =Math.floor(Math.random()*numberOfLifehacks)
                          
-            return Lifehack.find().skip(randomNum).limit(1)
+            return Lifehack.find().skip(randomNum).limit(1).populate(["tags","author"])
         })
         .then((randomLifehack)=>{
             
