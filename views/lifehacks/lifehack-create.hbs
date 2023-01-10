@@ -7,13 +7,28 @@
     <label>Description:
         <textarea name="description" cols="30" rows="4"></textarea>
     </label>
+    <hr>
     {{!-- bonus let the user put more than one url --}}
-    <label>:multimedia url:
-        <input type="url" name="embedMultimedia"> 
-    </label>
-    <label>Upload an img:
-        <input type="file" name="image01"> 
-    </label>
+    <div>
+        <label>Image url:
+            <input type="url" name="embedMultimedia">
+        </label>
+        <label> Or upload an image:
+            <input type="file" name="image01">
+        </label>
+    
+    </div>
+    <hr>
+    <div>
+        {{!-- <label>Youtube/cloudinary url:
+            <input type="url" name="videoUrl">
+        </label> --}}
+        <label>Upload a video:
+            <input type="file" name="video01">
+        </label>
+    
+    </div>
+
 
     
 

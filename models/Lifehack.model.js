@@ -29,6 +29,10 @@ const lifehackSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId, // check if we can store only the username
       ref: "User",
     },
+    videoUrl:{
+      type:String,
+      trim:true
+    },
 
     tags: [{
       type: mongoose.Schema.Types.ObjectId,

@@ -54,13 +54,14 @@ router.post("/lifehacks/create",isLoggedIn,urlImgValidator,fileUploader.single('
 
    //store img link of cloudinary 
     let imageUploadUrl = req.file ? req.file.path : null;
-
+    
 
     const newLifehackData = {
         title: req.body.title,
         description:req.body.description,
         embedMultimedia: imageUploadUrl || req.body.embedMultimedia || res.locals.defaultImgUrl,
         tags:req.body.tags,
+        videoUrl: req.body.videoUrl,
         author:  userInSession._id      
     }
 
