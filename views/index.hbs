@@ -1,12 +1,12 @@
 
+
+<div class="container content-row">
 {{#if userInSession}}
     <h2>Welcome to {{appTitle}} <b>{{capitalize userInSession.username}}</b> </h2>
 {{else}}
     <h2>Welcome to {{appTitle}} </h2>
 {{/if}}
 <hr>
-
-<div class="container-fluid content-row">
         <div class="row">
 
     {{#each randomLifehacksArray}}
