@@ -4,7 +4,7 @@
 const getDefaultImg= function(req,res,next){
 
     //only passes a image if the user does not provide an image for the lH
-    if(!req.body.embedMultimedia || !req.file ){
+    if(!req.body.embedMultimedia || !req.files.image ){
         
         
         

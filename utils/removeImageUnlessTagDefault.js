@@ -1,4 +1,4 @@
-const deleteOldImg = require("./deleteOldImg");
+const deleteFileFromCloudinary = require("./deleteFileFromCloudinary");
 const getCloudinaryIDfromUrl = require("./getCloudinaryIDfromUrl");
 const isDefaultImage= require("./isDefaultImage")
 
@@ -14,8 +14,8 @@ const removeImageUnlessTagDefault = function (url, tagsObjArray) {
     } else {
       
       const fileNameId = getCloudinaryIDfromUrl(url);
-      
-      deleteOldImg(fileNameId);
+      console.log(`image id `, fileNameId)
+      deleteFileFromCloudinary(fileNameId,`image`);
       
     }
   }

@@ -15,10 +15,10 @@ const urlImgValidator = async function(req,res,next){
     
             
             if(response.headers['content-type'].startsWith("image")){
-                 console.log(`the url is valid for an img`)
+                 console.log(`the url is valid for image`)
                  next()
             }else{
-                console.log(`the url is not an img`)
+                console.log(`the url is not an image`)
                 
                 
     

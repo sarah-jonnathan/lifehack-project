@@ -9,14 +9,21 @@
     <label>Description:
         <textarea name="description" cols="30" rows="4">{{lifehack.description}}</textarea>
     </label>
+    <hr>
     {{!-- bonus let the user put more than one url --}}
     <label>img url:
         <input type="url" value="{{lifehack.embedMultimedia}}"  name="embedMultimedia"> 
     </label>
-     <label>Upload an img:
+     <label>Or upload an image:
         <input type="file" name="image01"> 
     </label>
-    
+    <hr>
+    <label>Upload a video:
+            <input type="file" name="video01">
+    </label>
+    <hr>
+    <aside>"Warning!! Sending the form with a new image or video will automatically delete the old file."</aside>
+    <br>
 
     <select name="tags"  multiple>
         {{#each lifehack.tags }}
