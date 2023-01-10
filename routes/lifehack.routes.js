@@ -75,6 +75,24 @@ router.post("/lifehacks/create",isLoggedIn,urlImgValidator,fileUploader.single('
     
     
 })
+router.get("/lifehacks/random-lifehack",(req,res,next)=>{
+
+    Lifehack.countDocuments()
+        .then(numberOfLifehacks=>{
+            const randomNum =Math.floor(Math.random()*numberOfLifehacks)
+                         
+            return Lifehack.find().skip(randomNum).limit(1).populate(["tags","author"])
+        })
+        .then((randomLifehack)=>{
+            
+            res.render("lifehacks/lifehack-details",randomLifehack[0])
+
+        })
+        .catch(error=>{
+            console.log(`there was an error getting a Random Lifehack`,error)
+            next(error)
+        })
+})
 //read: display details of a LH
 router.get("/lifehacks/:lifehackId",(req,res,next)=>{
     const lifehackId = req.params.lifehackId
@@ -88,6 +106,7 @@ router.get("/lifehacks/:lifehackId",(req,res,next)=>{
         })
 
 })
+
 //read: display edit form
 router.get("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,(req,res,next)=>{
     const lifehackId = req.params.lifehackId

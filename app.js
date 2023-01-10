@@ -36,6 +36,10 @@ hbs.registerHelper('equalOrTrue', function(value1, value2,value3, options) {
         }
     }
 });
+//register a new custom helper to capitalize a string (the syntax to use it {{capitalize string1}}) where string1 is the value we want to capitalize
+hbs.registerHelper('capitalize', function(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  });
 
 const app = express();
 
@@ -45,7 +49,7 @@ const getTags = require("./middleware/getTags")
 const capitalize = require("./utils/capitalize");
 const projectName = "Raccoons to the Rescue";
 
-app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher and edited by Jonnathan and Sarah`;
+app.locals.appTitle = `${capitalize(projectName)}`;
 
 
 
