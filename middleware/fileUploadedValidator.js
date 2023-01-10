@@ -11,8 +11,10 @@ const fileUploadedValidator = function(req,res,next){
     }else if(videoFile.mimetype.startsWith(`image`)){
         
         console.log(`the user is updating an img as a video`)
+        
         deleteFileFromCloudinary(req.files.video01[0].filename,`image`)
-
+        req.files.video01=null
+        console.log(`img uploaded deleted from cloudinary`)
 
     }else if(videoFile.mimetype.startsWith(`video`)){
         console.log("the video file was uploaded correctly")
@@ -25,6 +27,8 @@ const fileUploadedValidator = function(req,res,next){
         
         console.log(`the user is updating a video  as an img`)
         deleteFileFromCloudinary(req.files.image01[0].filename,`video`)
+        req.files.image01=null
+        console.log(`video uploaded deleted from cloudinary`)
 
 
     }else if(imgFile.mimetype.startsWith(`image`)){

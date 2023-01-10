@@ -80,7 +80,7 @@ router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
      Lifehack.create(newLifehackData)
        .then((newLifehack) => {
          res.redirect(`/lifehacks/${newLifehack._id}`);
-         res.redirect("/lifehacks");
+        
        })
        .catch((error) => {
          console.log(

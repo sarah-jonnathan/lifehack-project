@@ -10,10 +10,10 @@ const getCloudinaryIDfromUrl = (url)=>{
       finish = url.indexOf(`.jpg`);
     } else if (url.indexOf(`.png`) !== -1) {
       finish = url.indexOf(`.png`);
-      console.log(`its an image`)
+      
     }else if(url.indexOf(`.mp4`) !== -1){  
       finish = url.indexOf(`.mp4`)
-      console.log(`its a video`)
+     
     }else if(url.indexOf(`.webm`) !== -1){  
       finish = url.indexOf(`.webm`)
     } else {

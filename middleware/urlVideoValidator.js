@@ -1,5 +1,5 @@
 const axios = require("axios")
-
+//this middleware function is not used at the moment
 const urlVideoValidator = async function(req,res,next){
     
     if(!req.body.videoUrl){
