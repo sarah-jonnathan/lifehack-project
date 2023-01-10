@@ -8,7 +8,7 @@ const deleteFileFromCloudinary = async function(fileNameId, fileType){
       else if (fileType === 'video') {
         await cloudinary.uploader.destroy(fileNameId, { resource_type: 'video' });
       }
-      console.log(`Old cloudinary ${fileType} deleted`)
+      console.log(`cloudinary ${fileType} deleted`)
     }catch(error){
       console.log(`the has been an error deleting the ${fileType} for the DB`,error)
     }

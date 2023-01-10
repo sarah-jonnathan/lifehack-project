@@ -14,7 +14,7 @@ const removeImageUnlessTagDefault = function (url, tagsObjArray) {
     } else {
       
       const fileNameId = getCloudinaryIDfromUrl(url);
-      console.log(`image id `, fileNameId)
+      
       deleteFileFromCloudinary(fileNameId,`image`);
       
     }

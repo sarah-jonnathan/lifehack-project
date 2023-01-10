@@ -13,6 +13,7 @@ const isLoggedIn = require("../middleware/isLoggedIn")
 const urlImgValidator = require("../middleware/urlImgValidator")
 const isLifeHackAuthoredByUser = require("../middleware/isLifehackAuthoredByUser")
 const getDefaultImg =require("../middleware/getDefaultImg")
+const fileUploadedValidator = require("../middleware/fileUploadedValidator");
 
 //require Utils
 const compareIds=require("../utils/compareIds")
@@ -40,49 +41,56 @@ router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
 
     Tag.find()
         .then(tagsArray=>{
+            
             res.render("lifehacks/lifehack-create",{tagsArray})
         })
         .catch(error=>{
             console.log("there has been an error getting the tags===>",error)
         })
 })
-//post: create new lH in DB
+// post: create new lH in DB
 
  router.post("/lifehacks/create",
    isLoggedIn,
-   urlImgValidator,
    fileUploader.fields([
      { name: "image01", maxCount: 1 },
      { name: "video01", maxCount: 1 },
    ]),
+   fileUploadedValidator,
+   urlImgValidator,
    getDefaultImg,
    (req, res, next) => {
      const userInSession = req.session.currentUser;
 
      //store img link of cloudinary
      let imageUploadUrl = req.files.image01 ? req.files.image01[0].path : null;
-    
+
      let videoUploadUrl = req.files.video01 ? req.files.video01[0].path : null;
 
      const newLifehackData = {
        title: req.body.title,
        description: req.body.description,
-       embedMultimedia: imageUploadUrl || req.body.embedMultimedia || res.locals.defaultImgUrl,
+       embedMultimedia:
+         imageUploadUrl || req.body.embedMultimedia || res.locals.defaultImgUrl,
        tags: req.body.tags,
        videoUrl: videoUploadUrl,
        author: userInSession._id,
      };
-     
 
      Lifehack.create(newLifehackData)
        .then((newLifehack) => {
+         res.redirect(`/lifehacks/${newLifehack._id}`);
          res.redirect("/lifehacks");
        })
        .catch((error) => {
-         console.log("there has been an error creating the lifehack===>",error);
+         console.log(
+           "there has been an error creating the lifehack===>",
+           error
+         );
        });
    }
  );
+
 
 router.get("/lifehacks/random-lifehack",(req,res,next)=>{
 
@@ -163,58 +171,60 @@ router.get("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,(re
 })
 
 //post: update LH in DB
-router.post("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,urlImgValidator,fileUploader.fields([
+router.post("/lifehacks/:lifehackId/edit",
+  isLoggedIn,
+  isLifeHackAuthoredByUser,
+  fileUploader.fields([
     { name: "image01", maxCount: 1 },
     { name: "video01", maxCount: 1 },
-  ]),getDefaultImg,(req,res,next)=>{
+  ]),
+  fileUploadedValidator,
+  urlImgValidator,
+  getDefaultImg,
+  (req, res, next) => {
+    const lifeHackId = req.params.lifehackId;
+    const userInSession = req.session.currentUser;
 
-    const lifeHackId =req.params.lifehackId
-    const userInSession =  req.session.currentUser
-    
-    const lastImageUrl=req.session.urlCloudinary
-    const lastVideoUrl=req.session.urlVideoCloudinary
-    const tagsObjArray=res.locals.tagsArray
-
+    const lastImageUrl = req.session.urlCloudinary;
+    const lastVideoUrl = req.session.urlVideoCloudinary;
+    const tagsObjArray = res.locals.tagsArray;
 
     let imageUploadUrl = req.files.image01 ? req.files.image01[0].path : null;
-    
+
     let videoUploadUrl = req.files.video01 ? req.files.video01[0].path : null;
 
     //checks if we are  uploading a new image
-    if(req.files.image01||req.body.embedMultimedia!==lastImageUrl){//we are uploading a new image
-      
-        removeImageUnlessTagDefault(lastImageUrl,tagsObjArray)
-           
+    if (req.files.image01 || req.body.embedMultimedia !== lastImageUrl) {
+      //we are uploading a new image
+
+      removeImageUnlessTagDefault(lastImageUrl, tagsObjArray);
     }
     //checks if we are uploading a new video
-    if(req.files.video01){//we are uploading a new video
+    if (req.files.video01) {
+      //we are uploading a new video
 
-        let cloudinaryVideoID = getCloudinaryIDfromUrl(lastVideoUrl)
-        deleteFileFromCloudinary(cloudinaryVideoID)
+      let cloudinaryVideoID = getCloudinaryIDfromUrl(lastVideoUrl);
+      deleteFileFromCloudinary(cloudinaryVideoID);
     }
 
-
-    
     const newLifehackData = {
-        title: req.body.title,
-        description:req.body.description,
-        embedMultimedia:imageUploadUrl||req.body.embedMultimedia||res.locals.defaultImgUrl,
-        videoUrl: videoUploadUrl,
-        tags:req.body.tags,
-          
-    }
+      title: req.body.title,
+      description: req.body.description,
+      embedMultimedia:
+        imageUploadUrl || req.body.embedMultimedia || res.locals.defaultImgUrl,
+      videoUrl: videoUploadUrl,
+      tags: req.body.tags,
+    };
 
-    Lifehack.findByIdAndUpdate(lifeHackId,newLifehackData)
-        .then((LifehackUpdated)=>{
-            res.redirect(`/lifehacks/${LifehackUpdated._id}`)
-            
-        })
-        .catch(error=>{
-            console.log("there has been an error editing the LH===>",error)
-        })
-    
-    
-})
+    Lifehack.findByIdAndUpdate(lifeHackId, newLifehackData)
+      .then((LifehackUpdated) => {
+        res.redirect(`/lifehacks/${LifehackUpdated._id}`);
+      })
+      .catch((error) => {
+        console.log("there has been an error editing the LH===>", error);
+      });
+  }
+);
 router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,isLifeHackAuthoredByUser,(req,res,next)=>{
     const lastUrl= req.headers.referer
     const lifehackId=req.params.lifehackId
