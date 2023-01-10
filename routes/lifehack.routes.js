@@ -75,24 +75,6 @@ router.post("/lifehacks/create",isLoggedIn,urlImgValidator,fileUploader.single('
     
     
 })
-router.get("/lifehacks/random-lifehack",(req,res,next)=>{
-
-    Lifehack.countDocuments()
-        .then(numberOfLifehacks=>{
-            const randomNum =Math.floor(Math.random()*numberOfLifehacks)
-                         
-            return Lifehack.find().skip(randomNum).limit(1).populate(["tags","author"])
-        })
-        .then((randomLifehack)=>{
-            
-            res.render("lifehacks/lifehack-details",randomLifehack[0])
-
-        })
-        .catch(error=>{
-            console.log(`there was an error getting a Random Lifehack`,error)
-            next(error)
-        })
-})
 //read: display details of a LH
 router.get("/lifehacks/:lifehackId",(req,res,next)=>{
     const lifehackId = req.params.lifehackId
@@ -106,7 +88,6 @@ router.get("/lifehacks/:lifehackId",(req,res,next)=>{
         })
 
 })
-
 //read: display edit form
 router.get("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,(req,res,next)=>{
     const lifehackId = req.params.lifehackId
@@ -224,38 +205,40 @@ router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,isLifeHackAuthoredByUser,
 
 
 router.post(`/lifehacks/:lifehackId`, (req, res, next) => {
-  const lifehackId = req.params.lifehackId;
+    const lifehackId = req.params.lifehackId;
 
-  // check if there is a user
-  if (req.session.currentUser) {
-    const userId = req.session.currentUser._id;
-    // Check if this user has liked this LH
-    User.findOne({ postsLiked: lifehackId })
-      .then((result) => {
-        // If LH id is not in postsLiked, ADD it and increment likes by 1
-        if (result === null) {
-          const addLhToUser = User.findByIdAndUpdate(
-            { _id: userId },
-            { $push: { postsLiked: lifehackId } }
-          );
-          const addLike = Lifehack.findOneAndUpdate(
-            { _id: lifehackId },
-            { $inc: { likes: 1 } }
-          );
-          Promise.all([addLhToUser, addLike]).then((result) => {
-            res.redirect(`/lifehacks/${lifehackId}`);
-          });
-        // Or show message
-        } else {
-          res.locals.warning("You have already liked this post!");
-        }
-      })
-      .catch((error) => {
-        console.log(`There has been an error updating the likes in the DB`, error);
-      });
-  } else {
-    res.locals.warning(`Please Login or Register to like a Lifehack`);
-  }
+    if (!req.session.currentUser) {
+        res.redirect(`/login`);
+    } else {
+        const userId =  req.session.currentUser._id;
+        // Check if this user has liked this LH
+        User.findById(userId)
+            .then((result) => {
+                const postsLikedArray = result.postsLiked;
+                const isLikedByUser = postsLikedArray.some(lhId => {
+                    if (lhId.toString() === lifehackId.toString()) {
+                        return true;
+                    }
+                })
+                // User has liked the post, do not add to DB or increment
+                if (isLikedByUser === true) {
+                    res.locals.warning = "You have already liked this post"; // not working now??
+                    res.redirect(`/lifehacks/${lifehackId}`)
+                } 
+                // User has NOT liked the post, add to DB AND increment
+                else {
+                    const addLhToUser = User.findByIdAndUpdate({_id: userId}, {$push: {postsLiked: lifehackId}});
+                    const addLike = Lifehack.findOneAndUpdate({_id: lifehackId}, {$inc: {likes: 1}});
+                    Promise.all([addLhToUser, addLike])
+                        .then((result) => {
+                            res.redirect(`/lifehacks/${lifehackId}`)
+                        })
+                }
+            })
+            .catch(error => {
+                console.log(`There has been an error updating the likes in the DB`, error);
+            })
+    }
 });
 
 module.exports = router;
