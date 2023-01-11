@@ -39,8 +39,11 @@
         {{/each}}
     </select>
 
-   <button type="submit">Update</button>
+   <button id="create" type="submit">Update</button>
 </form>
 <form action="/lifehacks/{{lifehack._id}}/delete" method="post">
         <button>Delete</button>
 </form>
+
+{{!-- handle in js --}}
+<div id="loading" hidden></div>

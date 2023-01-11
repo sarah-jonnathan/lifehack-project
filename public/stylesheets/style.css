@@ -236,3 +236,19 @@ img.thumb-img {
   justify-content: space-between;
   align-items: center !important;
 }
+
+
+
+/* javascript elements */
+#loading{
+  position: absolute;
+  height: 100px;
+  width: 100px;
+
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-70%);
+  background-image:url(../images/utils/loading.gif); 
+  background-size: contain;
+  
+}
