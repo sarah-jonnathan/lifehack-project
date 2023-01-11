@@ -89,15 +89,20 @@ router.get("/tags/:tagId/edit", isAdmin, (req, res, next) => {
 // POST: Update Tag details in DB
 router.post("/tags/:tagId/edit", isAdmin, fileUploader.single('img'), (req, res, next) => {
   const tagId = req.params.tagId;
-  const { name, img } = req.body;
-  if (!img) {
+  const { name} = req.body;
+  
+  
+  
+  const imgFilePath = req.file ? req.file.path: null;
+  //no file is uploaded
+  if (!imgFilePath) {
     Tag.findByIdAndUpdate(tagId, {name })
     .then(() => res.redirect(`/tags`))
     .catch((error) => {
       console.log("Error updating Tag", error);
     });
   } else {
-    const imgFilePath = req.file.path;
+    
     Tag.findByIdAndUpdate(tagId, {name, img: imgFilePath })
     .then(() => res.redirect(`/tags`))
     .catch((error) => {
