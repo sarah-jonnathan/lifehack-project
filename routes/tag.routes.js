@@ -10,11 +10,11 @@ const fileUploader = require('../config/cloudinary.config');
 
 /* Create a Tag */
 // GET route to display the form
-router.get('/tags/create', isAdmin, (req, res) => {
+router.get('/tags/create', isLoggedIn, isAdmin, (req, res) => {
     res.render("tags/tag-create");
 });
 // POST route to save a new tag to the database in the tags collection
-router.post('/tags/create', isAdmin, fileUploader.single('img'), (req, res, next) => {
+router.post('/tags/create', isLoggedIn, isAdmin, fileUploader.single('img'), (req, res, next) => {
     const { name, img } = req.body;
     const imgFilePath = req.file.path;
     Tag.create({ name, img: imgFilePath })
@@ -26,7 +26,7 @@ router.post('/tags/create', isAdmin, fileUploader.single('img'), (req, res, next
 });
 
 //READ: List all tags
-router.get("/tags", isAdmin, (req, res, next) => {
+router.get("/tags", isLoggedIn, isAdmin, (req, res, next) => {
     if (req.session.currentUser.isAdmin === true) {
       const is_admin = true;
     }
@@ -63,7 +63,7 @@ router.get("/tags/:tagId", (req, res, next) => {
 });
 
 // GET: Display TAG edit form
-router.get("/tags/:tagId/edit", isAdmin, (req, res, next) => {
+router.get("/tags/:tagId/edit", isLoggedIn, isAdmin, (req, res, next) => {
   const tagId = req.params.tagId;
   const data = {};
   Lifehack.find({ tags: tagId })
@@ -87,7 +87,7 @@ router.get("/tags/:tagId/edit", isAdmin, (req, res, next) => {
 });
 
 // POST: Update Tag details in DB
-router.post("/tags/:tagId/edit", isAdmin, fileUploader.single('img'), (req, res, next) => {
+router.post("/tags/:tagId/edit", isLoggedIn, isAdmin, fileUploader.single('img'), (req, res, next) => {
   const tagId = req.params.tagId;
   const { name} = req.body;
   
