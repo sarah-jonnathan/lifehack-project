@@ -1,9 +1,13 @@
 
 @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+html {
+  padding: 30px 20px;
+}
 
-body, html {
+body {
   padding: 30px 20px;
   font: 14px "Quicksand", "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color:#7e7d7d48;
 }
 
 a:link, a:active, a:visited {
@@ -24,10 +28,50 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /**** Carousel ****/
+.carousel-bdr {
+  box-shadow: rgba(0, 0, 0, .6) 0 10px 15px;
+}
+.carousel-bdr img {
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+  overflow: hidden;
+}
+
 .carousel-inner > .carousel-item > img, .carousel-inner > .carousel-item > a > img {
   width: 100% !important;
-  max-height: 200px !important;
+  max-height: 520px !important;
   object-fit: cover;
+}
+@media screen and (max-width: 450px) {
+  .carousel-inner > .carousel-item > img, .carousel-inner > .carousel-item > a > img {
+    width: 100% !important;
+    max-height: 200px !important;
+    object-fit: cover;
+  }
+}
+
+.carousel-caption {
+  background-color: rgb(43, 43, 43); /* Fallback color */
+  background-color: rgba(0,0,0, 0.6); /* Black w/opacity/see-through */
+  color: white;
+  font-weight: bold;
+  border: 3px solid #f1f1f1;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 50%;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, .8) 10px 10px 15px;
+}
+
+.carousel-ctrl-bg {
+  background-color: #ffffff; /* Fallback color */
+  background-color: rgba(0,0,0, 0.3); /* Black w/opacity/see-through */
+  border-radius: 10px;
 }
 
 /**** GENERAL LAYOUT ****/
@@ -69,8 +113,8 @@ a.logout:link, a.logout:visited, a.logout:active {
   color: #fff !important;
   font-size: 1em;
   align-self: center;
-  box-shadow: rgba(0, 0, 0, .3) 0 0 0;
   margin-top: 0px;
+  box-shadow: rgba(0, 0, 0, .3) 0 1px 5px;
   background-image: linear-gradient(#c50404, #930303);
 }
 

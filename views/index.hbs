@@ -1,38 +1,41 @@
-
-
-<div class="container content-row">
-{{#if userInSession}}
+<div class="container">
+{{!--#if userInSession}}
     <h2>Welcome to {{appTitle}} <b>{{capitalize userInSession.username}}</b> </h2>
 {{else}}
     <h2>Welcome to {{appTitle}} </h2>
-{{/if}}
-<hr>
-        <div class="row">
+{{/if--}}
 
-    {{#each randomLifehacksArray}}
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                
-                    <img src="{{this.embedMultimedia}}" alt="{{this.name}}" class="card-img-top ratio ratio-1x1">
-
-                <div class="card-body d-flex flex-column">
-                    <h4 class="grey text-truncate">{{this.title}}</h3>
-                </div>
-                <div class="card-tag">
-                {{#each tags}}
-                    <span><a href="/tags/{{this._id}}" class="tags"> #{{this.name}} </a></span>
-                {{/each}}
-                </div>
-                <div class="card-body">
-                    <a href="/lifehacks/{{this._id}}" class="btn">More</a>
-                {{#equalOrTrue ../userDetails._id this.author ../userDetails.isAdmin}}
-                    <a href="/lifehacks/{{this._id}}/edit" class="btn edit">Edit</a>
-                {{/equalOrTrue}}
-                </div>
+    {{!-- Start of 3 random LH's Carousel --}}
+    <div id="lhCarousel" class="carousel slide carousel-bdr mt-5" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            <li type="button" data-bs-target="#lhCarousel" data-bs-slide-to="0" class="active" 
+                aria-current="true" aria-label="Slide 1"></li>
+            <li type="button" data-bs-target="#lhCarousel" data-bs-slide-to="1"
+                aria-label="Slide 2"></li>
+            <li type="button" data-bs-target="#lhCarousel" data-bs-slide-to="2"
+                aria-label="Slide 3"></li>
+        </ol>
+        <div class="carousel-inner">
+            {{#each randomLifehacksArray}}
+            <div class="carousel-item{{#if @first }} active{{/if}}">
+                <a href="/lifehacks/{{this._id}}">
+                    <img src="{{this.embedMultimedia}}" alt="{{this.title}}" class="w-100 ratio">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3>{{this.title}}</h3>
+                        <p class="text-truncate">{{this.description}}</p>
+                    </div>
+                </a>
             </div>
+            {{/each}}
         </div>
-    {{/each}}
-        
-        </div>
+        <button class="carousel-control-prev carousel-ctrl-bg" type="button" data-bs-target="#lhCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon carousel-control-bg" aria-hidden="true"></span>
+            <span class="visually-hidden"></span>
+        </button>
+        <button class="carousel-control-next carousel-ctrl-bg" type="button" data-bs-target="#lhCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden"></span>
+        </button>
     </div>
 
+</div>
