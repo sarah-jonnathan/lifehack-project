@@ -2,10 +2,11 @@
 
 
 const getDefaultImg= function(req,res,next){
-  
+    
+    const totalTagsArray= res.locals.tagsArray
     //only passes a image if the user does not provide an image for the lH
     if(!req.body.embedMultimedia || !req.files.image01 ){
-               
+        
         
         //evaluate if one or more tags were selected (we get only the Ids)
         const myIdTags= req.body.tags
@@ -15,14 +16,15 @@ const getDefaultImg= function(req,res,next){
         }else if( typeof myIdTags==="string"){
             myIdTagsArray.push(myIdTags)
         }else{
-            console.log(`0 tags selected`)
-           next() 
+            
+            console.log(`0 tags selected,`)
+            myIdTagsArray.push(totalTagsArray[totalTagsArray.length-1]._id.toString())
+            
         }
         
         //compare the ids of the tags selected with all the tags in the DB
         //and create a new array tagsSelected with all the information about the tags selected
-
-        const totalTagsArray= res.locals.tagsArray
+       
         let tagsSelected= []
         myIdTagsArray.forEach(myId=>{
             let oneTag= totalTagsArray.filter(tagObject=>{
