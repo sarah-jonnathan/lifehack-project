@@ -19,8 +19,8 @@ const urlImgValidator = async function(req,res,next){
                  next()
             }else{
                 console.log(`the url is not pointing to an  image`)
-                
-                
+                req.body.embedMultimedia=null
+                 next()
     
                 
             }

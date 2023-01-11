@@ -2,11 +2,10 @@
 
 
 const getDefaultImg= function(req,res,next){
-
+  
     //only passes a image if the user does not provide an image for the lH
-    if(!req.body.embedMultimedia || !req.files.image ){
-        
-        
+    if(!req.body.embedMultimedia || !req.files.image01 ){
+               
         
         //evaluate if one or more tags were selected (we get only the Ids)
         const myIdTags= req.body.tags
