@@ -61,21 +61,25 @@ router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
    getDefaultImg,
    (req, res, next) => {
      const userInSession = req.session.currentUser;
-
+     const totalTagsArray= res.locals.tagsArray
      //store img link of cloudinary
      let imageUploadUrl = req.files.image01 ? req.files.image01[0].path : null;
 
      let videoUploadUrl = req.files.video01 ? req.files.video01[0].path : null;
-
-     const newLifehackData = {
-       title: req.body.title,
-       description: req.body.description,
-       embedMultimedia:
-         imageUploadUrl || req.body.embedMultimedia || res.locals.defaultImgUrl,
-       tags: req.body.tags,
-       videoUrl: videoUploadUrl,
-       author: userInSession._id,
-     };
+    if(!req.body.tags){
+      req.body.tags=totalTagsArray[totalTagsArray.length-1]._id.toString()
+      
+    }
+    
+         const newLifehackData = {
+           title: req.body.title,
+           description: req.body.description,
+           embedMultimedia:
+             imageUploadUrl || req.body.embedMultimedia || res.locals.defaultImgUrl,
+           tags: req.body.tags,
+           videoUrl: videoUploadUrl,
+           author: userInSession._id,
+         };
 
      Lifehack.create(newLifehackData)
        .then((newLifehack) => {
