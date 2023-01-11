@@ -185,7 +185,7 @@ router.post("/lifehacks/:lifehackId/edit",
     const lifeHackId = req.params.lifehackId;
     const userInSession = req.session.currentUser;
 
-    const lastImageUrl = req.session.urlCloudinary;
+    const lastImageUrl = req.session.urlImgCloudinary;
     const lastVideoUrl = req.session.urlVideoCloudinary;
     const tagsObjArray = res.locals.tagsArray;
 
@@ -195,11 +195,14 @@ router.post("/lifehacks/:lifehackId/edit",
 
     //checks if we are  uploading a new image
     if (req.files.image01 || req.body.embedMultimedia !== lastImageUrl) {
+
+      
       //we are uploading a new image
 
       removeImageUnlessTagDefault(lastImageUrl, tagsObjArray);
     }
     //checks if we are uploading a new video
+    
     if (req.files.video01) {
       //we are uploading a new video
 
@@ -212,7 +215,7 @@ router.post("/lifehacks/:lifehackId/edit",
       description: req.body.description,
       embedMultimedia:
         imageUploadUrl || req.body.embedMultimedia || res.locals.defaultImgUrl,
-      videoUrl: videoUploadUrl,
+      videoUrl: videoUploadUrl || req.body.videoUrl,
       tags: req.body.tags,
     };
 
