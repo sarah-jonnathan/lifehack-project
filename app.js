@@ -60,7 +60,10 @@ app.locals.appTitle = `${capitalize(projectName)}`;
 app.use( getTags,(req, res, next) => {
     app.locals.userDetails = req.session.currentUser; //store user details in app.locals (so that is is available in handlebars)
     // get baseURL
-    app.locals.baseURL = req.protocol + "://" + req.hostname + ":" + process.env.PORT;
+    // LOCAL
+    //app.locals.baseURL = req.protocol + "://" + req.hostname + ":" + process.env.PORT;
+    // LIVE
+    app.locals.baseURL = "https://lifehacks.adaptable.app/";
     next();
 });
 
