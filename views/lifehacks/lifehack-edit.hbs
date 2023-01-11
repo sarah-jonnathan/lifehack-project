@@ -4,10 +4,10 @@
 <form action="/lifehacks/{{lifehack._id}}/edit" method="post" enctype="multipart/form-data">
 
     <label>Title:
-        <input type="text" value="{{lifehack.title}}" name="title">
+        <input type="text" value="{{lifehack.title}}" name="title" required>
     </label>
     <label>Description:
-        <textarea name="description" cols="30" rows="4">{{lifehack.description}}</textarea>
+        <textarea name="description" cols="30" rows="4" required>{{lifehack.description}}</textarea>
     </label>
     <hr>
     {{!-- bonus let the user put more than one url --}}
@@ -23,6 +23,7 @@
             <input type="file" name="video01">
             <input type="url" name="videoUrl" hidden value="{{lifehack.videoUrl}}">
         "Accepted video file extensions: MP4, WEBM."
+            
             
     </label>
     <hr>

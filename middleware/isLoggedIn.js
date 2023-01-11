@@ -3,7 +3,7 @@ module.exports = (req, res, next) => {
   if (!req.session.currentUser) {
     return res.redirect("/login");
   } else {
-    console.log(req.session.currentUser);
+    console.log(`user===>`,req.session.currentUser.username);
     next();
   }
 };

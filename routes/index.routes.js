@@ -24,7 +24,7 @@ router.get("/", (req, res, next) => {
     }
   ]).exec()
     .then(randomLifehacksArray=>{
-      console.log(`how many lifehacks are we getting?`,randomLifehacksArray.length)
+      
       res.render("index", {
         userInSession: req.session.currentUser,
         randomLifehacksArray:randomLifehacksArray
