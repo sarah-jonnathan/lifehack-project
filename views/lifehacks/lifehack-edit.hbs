@@ -1,7 +1,7 @@
 
 <h2>Edit lifehack</h2>
 
-<form action="/lifehacks/{{lifehack._id}}/edit" method="post" enctype="multipart/form-data">
+<form id="form-lh" action="/lifehacks/{{lifehack._id}}/edit" method="post" enctype="multipart/form-data">
 
     <label>Title:
         <input type="text" value="{{lifehack.title}}" name="title" required>

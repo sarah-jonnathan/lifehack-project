@@ -5,21 +5,20 @@
 
 const createBtnDomElem = document.getElementById("create")
 const loadingSignalDomElem = document.getElementById("loading")
+const form = document.getElementById("form-lh")
 
-console.log
 
 
-//event listeners
-createBtnDomElem.addEventListener(`click`,()=>{
+//event listeners lifehack-create/lifehack-view
+if(createBtnDomElem){
   
-  loadingSignalDomElem.removeAttribute("hidden")
-  
-})
+  createBtnDomElem.addEventListener(`click`,(e)=>{
+    
+    if(form.checkValidity()) {
+      loadingSignalDomElem.removeAttribute("hidden")
+    }
+      
+  })
 
-// const selectElem = document.querySelector("select[name='tags']");
-// selectElem.addEventListener("change", function() {
-//   const selectedOptions = [...this.options].filter(option => option.selected);
-//   if (selectedOptions.length === 0) {
-//     this.options[0].selected = true;
-//   }
-// });
+}
+
