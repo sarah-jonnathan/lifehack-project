@@ -49,6 +49,12 @@
                     <a class="nav-link" href="/tags/{{this._id}}">{{this.name}}</a>
                   </li>
                 {{/each}}
+                {{#if userDetails.isAdmin}}
+                  <li><hr class="dropdown-divider"></li>
+                  <li class="dropdown-item">
+                    <a class="nav-link" href="/tags">View All Tags</a>
+                  </li>
+                {{/if}}
               </ul>
             </li>
             <li><hr class="dropdown-divider"></li>
