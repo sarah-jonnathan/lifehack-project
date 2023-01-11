@@ -1,23 +1,31 @@
-<h1>Tags in our DB:</h1>
+<div class="container">
 
-{{#if tags}}
-    <section>
+    <h1>All Tags</h1>
+
+    <a href="/tags/create" class="btn edit">Add a new Tag</a>
+    <br />
+    <br />
+    {{#if tags}}
         {{#each tags}}
-            <h2>{{this.name}}</h2>
-            <p>
-                <img src="{{this.img}}" alt="{{this.name}}" style="width: 150px"><br />
-                
-                <a href="/tags/{{this._id}}">View all LH's with this tag</a> || 
-                <a href="/tags/{{this._id}}/edit">Edit</a>
-                {{!-- add the form to handle the POST request to remove a specific tag  --}}
-                {{#if userDetails}}
+            <div class="row prof-lh-likes p-1 mb-1">
+                <div class="col-2 my-auto">
+                    <img class="thumb-img img-responsive" src="{{this.img}}" alt="{{this.name}}">
+                </div>
+                <div class="col my-auto text-truncate">
+                    <h2>{{this.name}}</h2>
+                </div>
+                <div class="col-4 my-auto align-r">
+                    <a href="/tags/{{this._id}}" class="btn">Assoc. Lifehacks</a> 
+                    <a href="/tags/{{this._id}}/edit" class="btn edit">Edit</a>
+                    {{!-- add the form to handle the POST request to remove a specific tag  --}}
                     <form action="/tags/{{this._id}}/delete" method="POST">
-                        <button>Delete</button>
+                        <button class="btn delete">Delete</button>
                     </form>
-                {{/if}}
-            </p>
+                </div>
+            </div>
         {{/each}}
-    </section>
-{{else}}
-    <h3>Sorry, no TAGS in the DB</h3>
-{{/if}}
+    {{else}}
+        <h3>Sorry, no TAGS in the DB</h3>
+    {{/if}}
+
+</div>
