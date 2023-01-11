@@ -1,49 +1,50 @@
-<h2>Welcome to your profile {{userDetails.username}}</h2>
+<h2 class="mt-3">Welcome to your profile {{userDetails.username}}</h2>
 
 {{!-- Lifehacks the user posted --}}
-<div>
-<ul>
-<h5>lifehacks you posted</h5>
- {{#each lifehacksPosted }}
- <div class="all-lh-profile">
-    <li  class="lh-container-profile" style="list-style-type:none"> 
-              
-        <a class="link-container" href="/lifehacks/{{this._id}}">
-            <div class="image-lh-profile-container">
-                <img class="img-lh-profile" src="{{this.embedMultimedia}}" alt="img">
-            </div> 
-            <div class="title-lh-profile-container">
+<div class="container">
+    <h5>Lifehacks you posted</h5>
+
+    {{#each lifehacksPosted }}
+    <div class="row prof-lh-likes p-1 mb-1 carousel-bdr">
+        <div class="col-2 my-auto">
+            <a href="/lifehacks/{{this._id}}">
+                <img class="thumb-img img-responsive" src="{{this.embedMultimedia}}" alt="{{this.title}}">
+            </a>
+        </div>
+        <div class="col my-auto text-truncate">
+            <a href="/lifehacks/{{this._id}}">
                 {{this.title}}
-            </div>
-        </a>
-        <div class="btn-profile-container">        
+            </a>
+        </div>
+        <div class="col-1 align-r mt-3">
             <form action="/lifehacks/{{this._id}}/edit" method="get">
-                <button type="submit">edit</button>
+                <button type="submit" class="btn edit2">Edit</button>
             </form>
         </div>
-        <div class="btn-profile-container">
+        <div class="col-1 align-l mt-3 mr-3">
             <form action="/lifehacks/{{this._id}}/delete" method="post">
-                <button type="submit">delete</button>
+                <button type="submit" class="btn delete">Delete</button>
             </form>
-        </div>       
-    </li>
- </div>
- {{/each}}   
-</ul>
+        </div>
+    </div>
+    {{/each}}
 </div>
 
 {{!-- Lifehacks the user LIKED --}}
-
-
-<div class="container">
+<div class="container mt-5">
     <h5>Your Favourite Lifehacks</h5>
+
     {{#each lifehacksLiked}}
-    <div class="row prof-lh-likes p-1 mb-1">
+    <div class="row prof-lh-likes p-1 mb-1 carousel-bdr">
         <div class="col-2 my-auto">
-            <img class="thumb-img img-responsive" src="{{this.embedMultimediaLike}}" alt="{{this.title}}">
+            <a href="/lifehacks/{{this._id}}">
+                <img class="thumb-img img-responsive" src="{{this.embedMultimediaLike}}" alt="{{this.title}}">
+            </a>
         </div>
         <div class="col my-auto text-truncate">
-            {{this.titleLike}}
+            <a href="/lifehacks/{{this._id}}">
+                {{this.titleLike}}
+            </a>
         </div>
         <div class="col-2 my-auto align-r">
             <form action="/lifehacks/{{this._id}}" method="POST">
