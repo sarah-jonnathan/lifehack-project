@@ -14,7 +14,7 @@ const storage = new CloudinaryStorage({
   // cloudinary: cloudinary,
   cloudinary,
   params: {
-    allowed_formats: ['jpg', 'png','mp4','webm'],
+    allowed_formats: ['jpg', 'png','mp4','webm',"gif"],
     folder: 'lifehack-project', // The name of the folder in cloudinary
     resource_type: 'auto' 
   }
