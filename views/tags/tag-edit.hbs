@@ -1,18 +1,52 @@
 {{!-- views/tags/tag-edit.hbs --}}
 
-<h2>Edit a Tag</h2>
+<div class="container prof-lh-likes p-3 mb-1">
+  <form action="/tags/{{tagDetails._id}}/edit" method="post" enctype="multipart/form-data">
+    
+    <div class="row">
+      <div class="col-6 my-auto align-items-start">
+        <h2>Edit a Tag : {{tagDetails.name}}</h2>
+      </div>
+      <div class="col my-auto align-l">
+        {{#if warning}}
+          <p class="warning bottom">{{warning}}</p>
+        {{/if}}
+      </div>
+    </div>
 
-<p>{{warning}}</p>
-<p><img src="{{tagDetails.img}}" alt="{{tagDetails.name}}" style="width: 150px"></p>
+    <div class="row">
+      <div class="col-2 my-auto">
+        <label for="name"> Name:</label>
+      </div>
+      <div class="col my-auto">
+        <input type="text" name="name" value="{{tagDetails.name}}" />
+      </div>
+    </div>
 
-<form action="/tags/{{tagDetails._id}}/edit" method="post" enctype="multipart/form-data">
-  <label> Name:
-    <input type="text" name="name" value="{{tagDetails.name}}" />
-  </label>
+    <div class="row">
+      <div class="col-2 my-auto">
+        <label for="image"> Image:</label>
+      </div>
+      <div class="col my-auto">
+        <input type="file" name="img" />
+      </div>
+    </div>
 
-  <label> Image:
-    <input type="file" name="img" />
-  </label>
+    <div class="row mb-3">
+      <div class="col-10 my-auto align-r">&nbsp;</div>
+      <div class="col-1 my-auto align-r">
+        <button type="submit" class="btn edit"> Edit </button>
+      </div>
+      <div class="col-1 my-auto align-r">
+        <button type="button" class="btn cancel"> Cancel </button>
+      </div>
+    </div>
 
-  <button type="submit"> Edit </button>
-</form>
+    <div class="row">
+      <div class="col my-auto align-r">
+        <img src="{{tagDetails.img}}" alt="{{tagDetails.name}}" class="img-thumbnail">
+      </div>
+    </div>
+     
+  </form>
+</div>

@@ -71,9 +71,9 @@ router.get("/tags/:tagId/edit", isLoggedIn, isAdmin, (req, res, next) => {
       data.lifehack = lifehack;
       
       if (data.lifehack.length > 0) {
-        res.locals.warning = "There are LH's in DB associated to this Tag. Deleting this Tag might not be a good idea.";
+        res.locals.warning = "There are Lifehack's in DB associated to this Tag. Be aware when editing this Tag.";
       } else {
-        res.locals.warning = "There are no LH's in DB associated to this Tag."
+        res.locals.warning = "";
       }
       return Tag.findById(tagId);      
     })
