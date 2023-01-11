@@ -13,7 +13,7 @@
     
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid d-flex">
-        <a class="navbar-brand" href="{{baseURL}}">
+        <a class="navbar-brand" href="/">
           <img src="https://res.cloudinary.com/dsw3axyzs/image/upload/v1673092584/raccoon7_wrzwm2.png" alt="Logo" width="30" height="24"
             class="d-inline-block align-text-top">
           Raccoons to the Rescue
@@ -27,17 +27,14 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav me-auto my-2 my-lg-0 justify-content-end">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{baseURL}}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{baseURL}}/lifehacks">Lifehacks</a>
+              <a class="nav-link" href="/lifehacks">Lifehacks</a>
             </li>
              <li class="nav-item">
-              <a class="nav-link" href="{{baseURL}}/lifehacks/random-lifehack">Random Lifehack</a>
+              <a class="nav-link" href="/lifehacks/random-lifehack">Random Lifehack</a>
             </li>
             {{#if userDetails}}
               <li class="nav-item">
-                <a class="nav-link" href="{{baseURL}}/lifehacks/create">Add a Lifehack</a>
+                <a class="nav-link" href="/lifehacks/create">Add a Lifehack</a>
               </li>
             {{/if}}
             <!-- If Tags show dropdown -->
@@ -57,17 +54,17 @@
             <li><hr class="dropdown-divider"></li>
             {{#if userDetails}}
               <li class="nav-item">
-                <a class="nav-link" href="{{baseUrl}}/profile">Profile</a>
+                <a class="nav-link" href="/profile">Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link btn logout" href="{{baseUrl}}/logout">Logout</a>
+                <a class="nav-link btn logout" href="/logout">Logout</a>
               </li>
             {{else}}
               <li class="nav-item">
-                <a class="nav-link" href="{{baseUrl}}/signup">Register</a>
+                <a class="nav-link" href="/signup">Register</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{baseUrl}}/login">Login</a>
+                <a class="nav-link" href="/login">Login</a>
               </li>
             {{/if}}
           </ul>
