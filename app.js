@@ -63,7 +63,7 @@ app.use( getTags,(req, res, next) => {
     // LOCAL
     //app.locals.baseURL = req.protocol + "://" + req.hostname + ":" + process.env.PORT;
     // LIVE
-    app.locals.baseURL = "https://lifehacks.adaptable.app/";
+    app.locals.baseURL = "https://lifehacks.adaptable.app";
     next();
 });
 
