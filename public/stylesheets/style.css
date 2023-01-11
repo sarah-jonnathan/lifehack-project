@@ -130,6 +130,16 @@ button.likes:hover {
   color: white;
 }
 
+.likes .badge2 {
+  position: absolute;
+  top: 20px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background-color: #ff00005d;
+  color: white;
+}
+
 .btm-lh-display {
   display: flex;
   flex-direction: row;
@@ -167,7 +177,7 @@ button.likes:hover {
 
 .lh-container-profile {  
   display: flex;
- 
+  
 }
 
 .link-container {
@@ -202,4 +212,27 @@ button.likes:hover {
 .btn-profile-container{
   display: flex;
   align-items: center;
+}
+
+
+.prof-lh-likes {
+  background-color: #7e7d7d48;
+  border-radius: 10px;
+  flex-direction: row;
+}
+
+.thumb-img {
+  object-fit: cover;
+  overflow: hidden;
+  height: 8vh; 
+  width : 8vw;
+}
+
+img.thumb-img {
+  border-radius: 10px;
+  border: 2px solid #0598d3;
+}
+.prof-lh-likes-col {
+  justify-content: space-between;
+  align-items: center !important;
 }

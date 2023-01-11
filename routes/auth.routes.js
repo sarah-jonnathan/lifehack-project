@@ -154,20 +154,60 @@ router.get("/logout", isLoggedIn, (req, res) => {
     res.redirect("/");
   });
 });
-//GET /profile
-router.get("/profile",isLoggedIn,(req,res,next)=>{
 
-  const userId = req.session.currentUser._id
-  const data ={}
+// GET /profile
+router.get("/profile", isLoggedIn, (req, res, next) => {
+  console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  const userId = req.session.currentUser._id;
+  const data = {};
+  
   Lifehack.find({author: userId})
-    .then(lifehacksPosted=>{
-      
-      data.lifehacksPosted =lifehacksPosted
-      res.render("users/user-profile",data)
-    })
-    .catch(error=>{
-      console.log(`there was an error in the profile page=>${error}`)
-      next(error)
-    })
-})
+  .then(lifehacksPosted=>{
+    data.lifehacksPosted = lifehacksPosted;
+    
+    return User.aggregate([ 
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(userId)
+        },
+      },
+      {
+        $lookup: {
+          from: "lifehacks",
+          localField: "postsLiked",
+          foreignField: "_id",
+          as: "lookup_LH_likes",
+        },
+      },
+      {
+        $unwind: "$lookup_LH_likes"
+      },
+      {
+        $group: {
+          "_id": "$lookup_LH_likes._id",
+          "embedMultimediaLike": {
+            "$first": "$lookup_LH_likes.embedMultimedia"
+          },
+          "titleLike": {
+            "$first": "$lookup_LH_likes.title"
+          },
+          "postsLiked": {
+            "$first": "$postsLiked"
+          }
+        }
+      },
+    ])
+  })
+  .then(result => {
+    data.lifehacksLiked = result;
+    res.render("users/user-profile", data);
+    
+  })
+  .catch((error) => {
+    console.log(`There was an error in the profile page => ${error}`);
+    next(error);
+  });
+  
+});
+
 module.exports = router;

@@ -1,15 +1,6 @@
 <h2>Welcome to your profile {{userDetails.username}}</h2>
 
-
-
-
-
-
-
-
-
-
-{{!-- lifehacks the user posted --}}
+{{!-- Lifehacks the user posted --}}
 <div>
 <ul>
 <h5>lifehacks you posted</h5>
@@ -39,11 +30,26 @@
  </div>
  {{/each}}   
 </ul>
-
 </div>
 
-<div>
-    <ul>
-        <h5>lifehacks you like</h5>
-    </ul>
+{{!-- Lifehacks the user LIKED --}}
+
+
+<div class="container">
+    <h5>Your Favourite Lifehacks</h5>
+    {{#each lifehacksLiked}}
+    <div class="row prof-lh-likes p-1 mb-1">
+        <div class="col-2 my-auto">
+            <img class="thumb-img img-responsive" src="{{this.embedMultimediaLike}}" alt="{{this.title}}">
+        </div>
+        <div class="col my-auto text-truncate">
+            {{this.titleLike}}
+        </div>
+        <div class="col-2 my-auto align-r">
+            <form action="/lifehacks/{{this._id}}" method="POST">
+                <button class="likes"><span class="badge2">Remove</span></button>
+            </form>
+        </div>
+    </div>
+    {{/each}}
 </div>
