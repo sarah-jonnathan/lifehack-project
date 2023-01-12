@@ -41,9 +41,9 @@
                     </div>
                     <div class="btm-item align-r">
                         <h6 class="grey">Submitted by: {{lifehack.author.username}}</h6>
-                        {{#equalOrTrue userDetails._id author._id userDetails.isAdmin}}
-                            <a href="/lifehacks/{{this._id}}/edit" class="btn edit">Edit</a>
-                            <form action="/lifehacks/{{this._id}}/delete" method="POST">
+                        {{#equalOrTrue userDetails._id lifehack.author._id userDetails.isAdmin}}
+                            <a href="/lifehacks/{{lifehack._id}}/edit" class="btn edit">Edit</a>
+                            <form action="/lifehacks/{{lifehack._id}}/delete" method="POST">
                                 <button class="btn delete">Delete</button>
                             </form>
                         {{/equalOrTrue}}
