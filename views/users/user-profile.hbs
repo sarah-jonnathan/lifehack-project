@@ -6,9 +6,9 @@
 
     {{#each lifehacksPosted }}
     <div class="row prof-lh-likes p-1 mb-1 carousel-bdr">
-        <div class="col-2 my-auto">
+        <div class="col-3 my-auto">
             <a href="/lifehacks/{{this._id}}">
-                <img class="thumb-img img-responsive" src="{{this.embedMultimedia}}" alt="{{this.title}}">
+                <img class="thumb-img img-fluid" src="{{this.embedMultimedia}}" alt="{{this.title}}">
             </a>
         </div>
         <div class="col my-auto text-truncate">
@@ -36,9 +36,9 @@
 
     {{#each lifehacksLiked}}
     <div class="row prof-lh-likes p-1 mb-1 carousel-bdr">
-        <div class="col-2 my-auto">
+        <div class="col-3 my-auto">
             <a href="/lifehacks/{{this._id}}">
-                <img class="thumb-img img-responsive" src="{{this.embedMultimediaLike}}" alt="{{this.title}}">
+                <img class="thumb-img img-fluid" src="{{this.embedMultimediaLike}}" alt="{{this.title}}">
             </a>
         </div>
         <div class="col my-auto text-truncate">

@@ -300,8 +300,8 @@ button.likes:hover {
 .thumb-img {
   object-fit: cover;
   overflow: hidden;
-  max-width: 100%;
-  height: auto;
+  height: 12vh; 
+  width : 12vw;
 }
 
 img.thumb-img {
@@ -438,10 +438,4 @@ label {
   background-image:url(../images/utils/loading.gif); 
   background-size: contain;
   
-}
-/* errors */
-.error-handling{
-
-  margin-top: 2rem;
-
 }
