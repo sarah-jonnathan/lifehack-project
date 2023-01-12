@@ -76,6 +76,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /**** GENERAL LAYOUT ****/
 .btn {
+  display: inline-block;
   background-image: linear-gradient(#00b7ff, #0277a6);
   text-decoration: none;
   border: 2px solid #fff;
@@ -97,7 +98,8 @@ a.btn {
   color: #fff
 }
 
-a.btn:hover {
+a.btn:hover, .btn:hover {
+  color: #fff !important;
   background-image: linear-gradient(#0598d3, #046085);
 }
 
@@ -105,7 +107,8 @@ a.btn:hover {
   background-image: linear-gradient(#04c547, #039327);
 }
 
-a.edit:hover {
+a.edit:hover, .edit:hover {
+  color: #fff !important;
   background-image: linear-gradient(#04a33b, #027a20);
 }
 
@@ -297,12 +300,12 @@ button.likes:hover {
 .thumb-img {
   object-fit: cover;
   overflow: hidden;
-  height: 8vh; 
-  width : 8vw;
+  max-width: 100%;
+  height: auto;
 }
 
 img.thumb-img {
-  border-radius: 10px;
+  border-radius: 7px;
   border: 2px solid #0598d3;
 }
 .prof-lh-likes-col {
