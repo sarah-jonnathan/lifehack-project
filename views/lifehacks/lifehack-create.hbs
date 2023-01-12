@@ -10,42 +10,39 @@
     </div>
     
     <div class="form-group row">
-
         <label class="col-sm-2 col-xl-2 col-form-label text-center" for="description-input">Description:</label>
         <textarea class="form-control col-sm-10 col-xl-7" id="description-input" name="description" cols="30" rows="10" required></textarea>
     </div>
     <hr>
     
+    {{!-- Upload an Image --}}
     <div class="form-group row">
         <label  class="col-sm-2 col-xl-2 col-form-label text-center" for="file-img-input">Upload an image:</label>
-            <div class="col-sm-10 col-xl-7 d-flex d-sm-flex justify-content-center">
-                <input  type="file" name="image01" id="file-img-input">
-                <small><b>"Accepted file extensions: JPG, PNG, GIF."</b></small>   
-
-            </div>
+        <div class="col-sm-10 col-xl-7 d-flex d-sm-flex justify-content-center">
+            <input  type="file" name="image01" id="file-img-input">
+            <small class="warning left"><b>"Accepted file extensions: JPG, PNG, GIF."</b></small>
+        </div>
     </div>
 
-
-    
+    {{!-- Or a link to an Image --}}
     <div class="form-group row">
         <label class="col-sm-2 col-xl-2 col-form-label text-center" for="url-input"> or link an Image:</label>
         <input type="url" name="embedMultimedia" id="url-input" class="form-control col-sm-10 col-xl-7">
-
     </div>
     
     <hr>
+    {{!-- Upload a Video --}}
     <div class="form-group row">
-       
         <label class="col-sm-2 col-xl-2 col-form-label text-center"for="file-video-input">Upload a video:</label>
         <div class="col-sm-10 col-xl-7 d-flex d-sm-flex justify-content-center">
             <input type="file" name="video01" id="file-video-input">
-            <small><b>"Accepted video file extensions: MP4, WEBM."</b></small>
+            <small class="warning left"><b>"Accepted video file extensions: MP4, WEBM."</b></small>
         </div>
-    
     </div>
 
     <hr>
     
+    {{!-- Select Tags --}}
     <div class="form-group row">
         <label class="col-sm-2 col-xl-2 col-form-label text-center" for="tags-select">Choose related tags:</label>
         <div class="col-sm-10 col-xl-4">
@@ -54,14 +51,15 @@
                     <option class="text-center" value="{{this._id}}">{{this.name}}</option>
                 {{/each}}
             </select>
-            <small class="form-text text-muted text-center">You can choose more than one tag.</small>
+            <small class="comment top mt-3 pb-2 form-text text-muted text-center">You can choose more than one tag.</small>
         </div>
     </div>
 
     
-    <div class="form-group row">
-
-        <button id="create" type="submit" class="mx-auto p-2">Create</button>
+    <div class="row">
+        <div class="col-sm col-xl text-center">
+            <button id="create" type="submit" class="btn">Create</button>
+        </div>
     </div>
 </form>
 </div>
