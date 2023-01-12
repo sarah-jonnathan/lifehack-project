@@ -22,10 +22,14 @@ hbs.registerHelper('equal', function(value1, value2, options) {
         } else {
             return options.inverse(this);
         }
+    }else{
+        return options.inverse(this);
+
     }
 });
 
 // register a new custom helper for handlebars (now {{`equalOrTrue` value1 value2 value3}} returns true when value1==value2 or value3 is true)
+
 hbs.registerHelper('equalOrTrue', function(value1, value2,value3, options) {
     if(value1 && value2 || value3){
         
@@ -34,11 +38,16 @@ hbs.registerHelper('equalOrTrue', function(value1, value2,value3, options) {
         } else {
             return options.inverse(this);
         }
+    }else{
+        return options.inverse(this)
     }
 });
 //register a new custom helper to capitalize a string (the syntax to use it {{capitalize string1}}) where string1 is the value we want to capitalize
 hbs.registerHelper('capitalize', function(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    if(string){
+        return string.charAt(0).toUpperCase() + string.slice(1);
+
+    }
   });
 
 const app = express();

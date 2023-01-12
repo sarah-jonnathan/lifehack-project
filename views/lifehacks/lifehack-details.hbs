@@ -69,8 +69,8 @@
 </div>
 
 {{!-- If Signed as a User or Admin, show comment form --}}
-{{#equalOrTrue userDetails._id userDetails._id userDetails.isAdmin}}
 <div class="container mt-4">
+{{#equalOrTrue userDetails._id userDetails._id userDetails.isAdmin}}
     {{!-- Start Comment Form --}}
     <form action="/lifehacks/{{lifehack._id}}/addcomment" method="POST">
     <input type="text" name="lifehackId" value="{{lifehack._id}}" hidden>
@@ -82,7 +82,9 @@
             <button class="btn">Comment</button>
         </div>
     </form>
+{{else}}
     {{!-- End Comment Form --}}
+{{/equalOrTrue}}
     
         {{!-- Start displaying comments, if any --}}
         <div class="col-md align-items-start">
@@ -119,7 +121,6 @@
         </div>
     </div>
 </div>
-{{/equalOrTrue}}
 
 
 
