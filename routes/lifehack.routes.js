@@ -27,7 +27,8 @@ const removeImageUnlessTagDefault = require("../utils/removeImageUnlessTagDefaul
 router.get("/lifehacks",(req,res,next)=>{
    
     Lifehack.find().populate("tags")
-        .then((allLH)=>{
+        .then((responseLifehack)=>{
+          const allLH =responseLifehack.reverse()
                       
             res.render("lifehacks/lifehacks-list",{
                 allLH,
