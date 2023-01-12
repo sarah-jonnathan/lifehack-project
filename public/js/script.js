@@ -4,20 +4,31 @@
 // });
 
 const createBtnDomElem = document.getElementById("create")
-const loadingSignalDomElem = document.getElementById("loading")
+
 const form = document.getElementById("form-lh")
 
 
 
-//event listeners lifehack-create/lifehack-view
+//event listeners 
 if(createBtnDomElem){
   
   createBtnDomElem.addEventListener(`click`,(e)=>{
-    
+
     if(form.checkValidity()) {
-      loadingSignalDomElem.removeAttribute("hidden")
-    }
       
+      //step1 create the element
+      const loadingSignalDomElem = document.createElement("div")
+      //step2 add properties
+        
+      loadingSignalDomElem.id ="loading"
+      
+      //step3
+      document.body.appendChild(loadingSignalDomElem)
+
+
+    }
+    
+   
   })
 
 }
