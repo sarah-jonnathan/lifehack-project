@@ -15,6 +15,7 @@ const urlImgValidator = require("../middleware/urlImgValidator")
 const isLifeHackAuthoredByUser = require("../middleware/isLifehackAuthoredByUser")
 const getDefaultImg =require("../middleware/getDefaultImg")
 const fileUploadedValidator = require("../middleware/fileUploadedValidator");
+const isCommentAuthoredByUser =require("../middleware/isCommentAuthoredByUser")
 
 //require Utils
 const compareIds=require("../utils/compareIds")
