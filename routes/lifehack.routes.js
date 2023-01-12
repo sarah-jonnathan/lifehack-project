@@ -114,7 +114,8 @@ router.get("/lifehacks/random-lifehack",(req,res,next)=>{
         })
         .then(responseComment=>{
           commentsArray=responseComment.reverse()
-          res.render("lifehacks/lifehack-details",{lifehack,commentsArray})
+          let showRandomBtn = true;
+          res.render("lifehacks/lifehack-details",{lifehack,commentsArray, showRandomBtn})
         })
         .catch(error=>{
             console.log(`there was an error getting a Random Lifehack`,error)
