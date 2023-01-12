@@ -20,7 +20,7 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #00b7ff;
+  color: #0277a6;
 }
 
 .grey {
@@ -168,7 +168,7 @@ a.logout:hover {
   background-image: linear-gradient(#04c547, #039327);
 }
 
-.edit2:hover {
+a.edit2:hover, .edit2:hover {
   color: #fff !important;
   background-image: linear-gradient(#04a33b, #027a20);
 }
@@ -339,75 +339,104 @@ label {
 }
 
 /***** vvv FOR 'WARNING' Bubble vvv *****/
-/* (A) SPEECH BOX */
+/* BOX */
 .warning {
-  /* (A1) FONT */
   font-family: arial, sans-serif;
   font-size: 1.1em;
- 
-  /* (A2) COLORS */
   color: #fff;
   background: #be3712;
- 
-  /* (A3) DIMENSIONS + POSITION */
   position: relative;
   padding: 20px;
   border-radius: 10px;
   max-width: 320px;
   clear: all;
 }
-/* (B) ADD SPEECH "CALLOUT TAIL" */
-/* (B1) USE ::AFTER TO CREATE THE "TAIL" */
+
+/* Different Warning tail positions */
 .warning::after {
-  /* (B1-1) ATTACH TRANSPARENT BORDERS */
   content: "";
   border: 20px solid transparent;
- 
-  /* (B1-2) NECESSARY TO POSITION THE "TAIL" */
   position: absolute;
 }
- 
-/* (B2) BOTTOM "CALLOUT TAIL" */
+
+/* BOTTOM */
 .bottom.warning::after {
-  /* (B2-1) DOWN TRIANGLE */
   border-top-color: #be3712;
   border-bottom: 0;
- 
-  /* (B2-2) POSITION AT BOTTOM */
   bottom: -20px; left: 50%;
   margin-left: -20px;
 }
-
-/* (C) DIFFERENT TAIL POSITIONS */
-/* (C1) TOP */
+/* TOP */
 .top.warning::after {
-  /* (C1-1) UP TRIANGLE */
   border-bottom-color: #be3712;
   border-top: 0;
- 
-  /* (C1-2) POSITION AT TOP */
   top: -20px; left: 50%;
   margin-left: -20px;
 }
  
-/* (C2) LEFT */
+/* LEFT */
 .left.warning::after {
-  /* (C2-1) LEFT TRIANGLE */
   border-right-color: #be3712;
   border-left: 0;
- 
-  /* (C2-2) POSITION AT LEFT */
   left: -20px; top: 50%;
   margin-top: -20px;
 }
  
-/* (C3) RIGHT */
+/* RIGHT */
 .right.warning::after {
-  /* (C3-1) RIGHT TRIANGLE */
   border-left-color: #be3712;
   border-right: 0;
+  right: -20px; top: 50%;
+  margin-top: -20px;
+}
+
+/***** vvv FOR 'Comments' Bubble vvv *****/
+/* BOX */
+.comment {
+  color: #222;
+  background: #ffffff;
+  position: relative;
+  padding: 10px 10px 0 10px;
+  border-radius: 6px;
+  max-width: 100%;
+  clear: all;
+  box-shadow: rgba(0, 0, 0, .3) 0 5px 15px;
+}
+
+/* Different Warning tail positions */
+.comment::after {
+  content: "";
+  border: 20px solid transparent;
+  position: absolute;
+}
+
+/* BOTTOM */
+.bottom.comment::after {
+  border-top-color: #ffffff;
+  border-bottom: 0;
+  bottom: -20px; left: 50%;
+  margin-left: -20px;
+}
+/* TOP */
+.top.warning::after {
+  border-bottom-color: #ffffff;
+  border-top: 0;
+  top: -20px; left: 50%;
+  margin-left: -20px;
+}
  
-  /* (C3-2) POSITION AT RIGHT */
+/* LEFT */
+.left.warning::after {
+  border-right-color: #ffffff;
+  border-left: 0;
+  left: -20px; top: 50%;
+  margin-top: -20px;
+}
+ 
+/* RIGHT */
+.right.comment::after {
+  border-left-color: #ffffff;
+  border-right: 0;
   right: -20px; top: 50%;
   margin-top: -20px;
 }

@@ -1,92 +1,125 @@
 <div class="container content-row">
-    <div class="row">
-        <div class="col">
+    <div class="row pb-3 carousel-bdr">
+        <div class="col mt-4">
+            {{!-- Start Card - Height 100 --}}
             <div class="card h-100">
-                <h2 class="card-header">{{lifehack.title}}</h2>
-                <div class="card-body">
+                <h2 class="card-header carousel-bdr rounded-lg">{{lifehack.title}}</h2>
+                <div class="card-body mt-4">
                     {{lifehack.description}}
                 </div>
                 {{#if hasVideoAndDefaultImage}}
-                    <div class="card-body">
-                        <iframe width="436" height="245" src="{{lifehack.videoUrl}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    </div>
-
+                <div class="card-body embed-responsive embed-responsive-21by9">
+                    <iframe class="embed-responsive-item" src="{{lifehack.videoUrl}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
                 {{else}}
-                    <div class="card-body">
-                        <img src="{{lifehack.embedMultimedia}}" alt="{{lifehack.title}}" class="w-100">
-                    </div>
+                <div class="card-body">
+                    <img src="{{lifehack.embedMultimedia}}" alt="{{lifehack.title}}" class="w-100">
+                </div>
                 {{/if}}
                 {{!-- video display --}}
                 {{#if hasVideoAndDefaultImage}} 
 
                 {{else}}          
                     {{#if lifehack.videoUrl}}
-                        <iframe width="436" height="245" src="{{lifehack.videoUrl}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <div class="embed-responsive">
+                        <iframe class="embed-responsive-item" src="{{lifehack.videoUrl}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
                     {{/if}}
                 {{/if}}    
                 {{!-- video display --}}
 
             
 
-                <div class="card-body btm-lh-display w-100">
-                    <div class="btm-item">
-                        <form action="/lifehacks/{{lifehack._id}}" method="POST">
-                            <button class="likes"><span class="badge">{{lifehack.likes}}</span></button>
-                        </form>
-                    </div>
-                    <div class="btm-item">
-                        {{#each lifehack.tags}}
-                            <span><a href="/tags/{{this._id}}" class="tags"># {{this.name}}</a></span>
-                        {{/each}}
-                    </div>
-                    <div class="btm-item align-r">
-                        <h6 class="grey">Submitted by: {{lifehack.author.username}}</h6>
+                <div class="card-body w-100">
+                    <div class="row">
+                        <div class="col-md-1 my-auto">
+                            <form action="/lifehacks/{{lifehack._id}}" method="POST">
+                                <button class="likes"><span class="badge">{{lifehack.likes}}</span></button>
+                            </form>
+                        </div>
+                        <div class="col-md-7 my-auto text-center">
+                            {{#each lifehack.tags}}
+                                <span><a href="/tags/{{this._id}}" class="tags">#{{this.name}}</a> </span>
+                            {{/each}}
+                        </div>
+                        <div class="col-md-2 my-auto text-right">
+                            <span class="grey">Submitted by: {{lifehack.author.username}}</span>
+                        </div>
                         {{#equalOrTrue userDetails._id lifehack.author._id userDetails.isAdmin}}
-                            <a href="/lifehacks/{{lifehack._id}}/edit" class="btn edit">Edit</a>
+                        <div class="col-md-2 my-auto btn-group justify-content-end" align="right">
+                            <form><a href="/lifehacks/{{lifehack._id}}/edit" class="btn edit2">Edit</a></form>
                             <form action="/lifehacks/{{lifehack._id}}/delete" method="POST">
                                 <button class="btn delete">Delete</button>
                             </form>
+                        </div>
                         {{/equalOrTrue}}
                     </div>
-                    <div class="btm-item align-r">
-                        {{#if showRandomBtn}}
-                        <a href="/lifehacks/random-lifehack" class="btn">Randomize!</a>
-                        {{/if}}
+                    <div class="row">
+                        <div class="col-md text-center">
+                            {{#if showRandomBtn}}
+                            <a href="/lifehacks/random-lifehack" class="btn">Randomize!</a>
+                            {{/if}}
+                        </div>
                     </div>
                 </div>
             </div>
+            {{!-- End Card - Height 100 --}}
         </div>
     </div>
 </div>
-{{#equalOrTrue userDetails._id userDetails._id userDetails.isAdmin}}
-    
-    <div>
-        <form action="/lifehacks/{{lifehack._id}}/addcomment" method="POST">
-            <label>add a comment...
-                <textarea name="comment"  cols="40" rows="3" required></textarea>
-                <input type="text" name="lifehackId" value="{{lifehack._id}}" hidden>
-            </label>
-        <button>Comment</button>
-        </form>
 
+{{!-- If Signed as a User or Admin, show comment form --}}
+{{#equalOrTrue userDetails._id userDetails._id userDetails.isAdmin}}
+<div class="container mt-4">
+    {{!-- Start Comment Form --}}
+    <form action="/lifehacks/{{lifehack._id}}/addcomment" method="POST">
+    <input type="text" name="lifehackId" value="{{lifehack._id}}" hidden>
+    <div class="row">
+        <div class="col-md-3 align-items-start form-group">
+            <h5>Add a comment</h5>
+            <textarea name="comment" class="form-control" rows="3" required></textarea>
+            <br/>
+            <button class="btn">Comment</button>
+        </div>
+    </form>
+    {{!-- End Comment Form --}}
+    
+        {{!-- Start displaying comments, if any --}}
+        <div class="col-md align-items-start">
+                
+
+            {{!-- If this LH has comments, display them --}}
+            {{#if commentsArray}}
+            <h5>All comments</h5>
+            
+                {{#each commentsArray}}
+                <div class="row">
+                    <div class="col-sm comment right m-2">
+                        <p>{{this.commentText}}</p>
+                    </div>
+                    <div class="col-sm-2 my-auto text-right">
+                        <p class="mt-3 ml-3">{{this.commentAuthor.username}}</p>
+                    </div>
+                    {{#equalOrTrue ../userDetails._id this.commentAuthor._id ../userDetails.isAdmin}}
+                    <div class="col-sm-1 my-auto text-right">
+                        <form action="/comments/{{this._id}}/delete" method="POST">
+                            {{!-- <a href="/comments/{{this._id}}/edit">Edit</a> --}}
+                            <button class="btn delete"><b>X</b></button>
+                        </form>
+                    </div>
+                    {{/equalOrTrue}}
+                </div>
+                {{/each}}
+            {{/if}}
+
+
+
+
+
+        </div>
     </div>
-{{/equalOrTrue}}
-{{#if commentsArray}}
-<div>
-    {{#each commentsArray}}
-    <div>
-        <p>{{this.commentAuthor.username}}</p>
-        <p>{{this.commentText}}</p>
-        
-        {{#equalOrTrue ../userDetails._id this.commentAuthor._id ../userDetails.isAdmin}}
-            {{!-- <a href="/comments/{{this._id}}/edit">Edit</a> --}}
-            <form action="/comments/{{this._id}}/delete" method="POST">
-            <button>Delete</button>
-            </form>
-        {{/equalOrTrue}}
-        
-    </div>
-    {{/each}}
 </div>
-{{/if}}
+{{/equalOrTrue}}
+
+
 
