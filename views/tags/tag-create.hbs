@@ -1,15 +1,44 @@
 {{!-- views/tags/tag-create.hbs --}}
 
-<h2>Create a Tag</h2>
+<div class="container prof-lh-likes p-3 mb-1">
+  <form id="form-lh" action="/tags/{{tagDetails._id}}/edit" method="post" enctype="multipart/form-data">
+    
+    <div class="row">
+      <div class="col-6 my-auto align-items-start">
+        <h2>Create a Tag</h2>
+      </div>
+      <div class="col my-auto align-l">
+        {{#if warning}}
+          <p class="warning bottom">{{warning}}</p>
+        {{/if}}
+      </div>
+    </div>
 
-<form id="form-lh" action="/tags/create" method="post" enctype="multipart/form-data">
-  <label> Name:
-    <input type="text" name="name" />
-  </label>
+    <div class="row">
+      <div class="col-2 my-auto">
+        <label for="name"> Name:</label>
+      </div>
+      <div class="col my-auto">
+        <input type="text" name="name" value="" />
+      </div>
+    </div>
 
-  <label> Image:
-    <input type="file" name="img" />
-  </label>
+    <div class="row">
+      <div class="col-2 my-auto">
+        <label for="image"> Image:</label>
+      </div>
+      <div class="col my-auto">
+        <input type="file" name="img" />
+      </div>
+    </div>
 
-  <button id="create" type="submit"> Create </button>
-</form>
+    <div class="row mb-3">
+      <div class="col-sm my-auto align-r">&nbsp;</div>
+      <div class="col-sm-2 my-auto align-r">
+        <button  id="create" type="submit" class="btn edit">Edit</button>
+        <a href="/tags" class="btn cancel">Cancel</a>
+      </div>
+    </div>
+     
+  </form>
+</div>
