@@ -341,14 +341,21 @@ label {
 /***** vvv FOR 'WARNING' Bubble vvv *****/
 /* BOX */
 .warning {
-  font-family: arial, sans-serif;
-  font-size: 1.1em;
   color: #fff;
   background: #be3712;
   position: relative;
   padding: 20px;
   border-radius: 10px;
-  max-width: 320px;
+  max-width: 100%;
+  clear: all;
+}
+.warning2 {
+  color: #fff;
+  background: #be3712;
+  position: relative;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 100%;
   clear: all;
 }
 
@@ -360,14 +367,14 @@ label {
 }
 
 /* BOTTOM */
-.bottom.warning::after {
+.warning.bottom::after {
   border-top-color: #be3712;
   border-bottom: 0;
   bottom: -20px; left: 50%;
   margin-left: -20px;
 }
 /* TOP */
-.top.warning::after {
+.warning.top::after {
   border-bottom-color: #be3712;
   border-top: 0;
   top: -20px; left: 50%;
@@ -383,7 +390,7 @@ label {
 }
  
 /* RIGHT */
-.right.warning::after {
+.warning.right::after {
   border-left-color: #be3712;
   border-right: 0;
   right: -20px; top: 50%;
@@ -411,14 +418,14 @@ label {
 }
 
 /* BOTTOM */
-.bottom.comment::after {
+.comment.bottom::after {
   border-top-color: #ffffff;
   border-bottom: 0;
   bottom: -20px; left: 50%;
   margin-left: -20px;
 }
 /* TOP */
-.top.warning::after {
+.comment.top::after {
   border-bottom-color: #ffffff;
   border-top: 0;
   top: -20px; left: 50%;
@@ -426,7 +433,7 @@ label {
 }
  
 /* LEFT */
-.left.warning::after {
+.comment.left::after {
   border-right-color: #ffffff;
   border-left: 0;
   left: -20px; top: 50%;
@@ -434,7 +441,7 @@ label {
 }
  
 /* RIGHT */
-.right.comment::after {
+.comment.right::after {
   border-left-color: #ffffff;
   border-right: 0;
   right: -20px; top: 50%;
