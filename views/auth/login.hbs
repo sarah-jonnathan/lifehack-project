@@ -1,17 +1,19 @@
 <div id="login-form">
   <h2>Log In</h2>
   <form action="/login" method="POST">
+    <div class="form-group row">
+      <label class="col-sm-2 col-md-2 col-form-label text-center" for="text-input" for="username-input"><b>Username</b></label>
+      <input class="form-control col-sm-8 col-md-3" id="username-input" type="text" name="username" placeholder="Your username" />
+    </div>
 
-    <label> Username
-      <input type="text" name="username" placeholder="Your username" />
-    </label>
-
-  
-    <label> Password
-      <input type="password" name="password" placeholder="Your password" />
-    </label>
-
-    <button type="submit">Log In</button>
+    <div class="form-group row">
+      <label class="col-sm-2 col-md-2 col-form-label text-center" for="password-input" ><b>Password</b></label>
+      <input class="form-control col-sm-8 col-md-3" id="password-input" type="password" name="password" placeholder="Your password" />
+    </div>
+    <div class="form-group row">
+      <button type="submit" class="p-2 m-4 col-sm-2 col-xl-1 m-md-4">Log In</button>
+      
+    </div>
 
 
     {{#if errorMessage}}
