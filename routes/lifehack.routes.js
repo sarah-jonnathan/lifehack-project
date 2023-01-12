@@ -15,6 +15,7 @@ const urlImgValidator = require("../middleware/urlImgValidator")
 const isLifeHackAuthoredByUser = require("../middleware/isLifehackAuthoredByUser")
 const getDefaultImg =require("../middleware/getDefaultImg")
 const fileUploadedValidator = require("../middleware/fileUploadedValidator");
+const isCommentAuthoredByUser =require("../middleware/isCommentAuthoredByUser")
 
 //require Utils
 const compareIds=require("../utils/compareIds")
@@ -27,7 +28,8 @@ const removeImageUnlessTagDefault = require("../utils/removeImageUnlessTagDefaul
 router.get("/lifehacks",(req,res,next)=>{
    
     Lifehack.find().populate("tags")
-        .then((allLH)=>{
+        .then((responseLifehack)=>{
+          const allLH =responseLifehack.reverse()
                       
             res.render("lifehacks/lifehacks-list",{
                 allLH,
