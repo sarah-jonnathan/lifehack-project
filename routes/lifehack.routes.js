@@ -124,17 +124,27 @@ router.get("/lifehacks/random-lifehack",(req,res,next)=>{
 })
 //read: display details of a LH
 router.get("/lifehacks/:lifehackId",(req,res,next)=>{
+    const totalTagsArray= res.locals.tagsArray
+    let hasVideoAndDefaultImage  
     let commentsArray=[]
     let lifehack
     const lifehackId = req.params.lifehackId
     Lifehack.findById(lifehackId).populate(["tags","author"])
         .then(responseLifehack=>{
             lifehack=responseLifehack
+
+            //checking if the image of the lH is a default img and if the lh has a video
+            const lifehackImgUrl=lifehack.embedMultimedia[0]
+            const isDefaultImageValue = isDefaultImage(lifehackImgUrl,totalTagsArray)
+            hasVideoAndDefaultImage= (isDefaultImageValue && lifehack.videoUrl )? true:false;
+
+
+            
             return Comment.find({ commentParent: lifehackId }).populate(["commentParent","commentAuthor"])
           })
         .then(responseComment=>{
           commentsArray=responseComment.reverse()
-          res.render("lifehacks/lifehack-details",{lifehack,commentsArray})
+          res.render("lifehacks/lifehack-details",{lifehack,commentsArray,hasVideoAndDefaultImage})
         })
         .catch(error=>{
             console.log("there has been an error getting the details of the LH==>",error)

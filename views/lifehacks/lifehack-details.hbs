@@ -6,14 +6,24 @@
                 <div class="card-body">
                     {{lifehack.description}}
                 </div>
-                <div class="card-body">
-                    <img src="{{lifehack.embedMultimedia}}" alt="{{lifehack.title}}" class="w-100">
-                </div>
+                {{#if hasVideoAndDefaultImage}}
+                    <div class="card-body">
+                        <iframe width="436" height="245" src="{{lifehack.videoUrl}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+
+                {{else}}
+                    <div class="card-body">
+                        <img src="{{lifehack.embedMultimedia}}" alt="{{lifehack.title}}" class="w-100">
+                    </div>
+                {{/if}}
                 {{!-- video display --}}
-                           
-               {{#if lifehack.videoUrl}}
-                    <iframe width="436" height="245" src="{{lifehack.videoUrl}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-               {{/if}}
+                {{#if hasVideoAndDefaultImage}} 
+
+                {{else}}          
+                    {{#if lifehack.videoUrl}}
+                        <iframe width="436" height="245" src="{{lifehack.videoUrl}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    {{/if}}
+                {{/if}}    
                 {{!-- video display --}}
 
             
