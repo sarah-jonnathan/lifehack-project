@@ -1,4 +1,6 @@
 // bin/seeds.js
+
+require("dotenv").config();
 const mongoose = require('mongoose');
 const Tags = require('../models/Tag.model');
 
