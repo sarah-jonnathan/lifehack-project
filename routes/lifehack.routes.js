@@ -98,6 +98,8 @@ router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
 
 
 router.get("/lifehacks/random-lifehack",(req,res,next)=>{
+    const totalTagsArray= res.locals.tagsArray
+    let hasVideoAndDefaultImage
     let commentsArray=[]
     let lifehack
     Lifehack.countDocuments()
@@ -109,13 +111,19 @@ router.get("/lifehacks/random-lifehack",(req,res,next)=>{
         .then(randomLifehack=>{
           lifehack=randomLifehack[0]
           const lifehackId=lifehack._id.toString()
-          console.log(`lifehack===>`,lifehackId)
+
+          //checking if the image of the lH is a default img and if the lh has a video
+          const lifehackImgUrl=lifehack.embedMultimedia[0]
+          const isDefaultImageValue = isDefaultImage(lifehackImgUrl,totalTagsArray)
+          hasVideoAndDefaultImage= (isDefaultImageValue && lifehack.videoUrl )? true:false;
+
+          
           return Comment.find({ commentParent: lifehackId }).populate(["commentParent","commentAuthor"])
         })
         .then(responseComment=>{
           commentsArray=responseComment.reverse()
           let showRandomBtn = true;
-          res.render("lifehacks/lifehack-details",{lifehack,commentsArray, showRandomBtn})
+          res.render("lifehacks/lifehack-details",{lifehack,commentsArray, showRandomBtn,hasVideoAndDefaultImage})
         })
         .catch(error=>{
             console.log(`there was an error getting a Random Lifehack`,error)
