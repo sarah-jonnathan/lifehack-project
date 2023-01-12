@@ -1,3 +1,11 @@
 
-<h2>{{error}}</h2>
-<h2>There was an error on the server! Check the console!</h2>
+    <h2 class="error handling">Unfortunately something went wrong</h2>
+{{#if error}}
+    <h2 class="error-handling">sorry {{capitalize userDetails.username}}. {{#with error}}{{message}}{{/with}}</h2>
+
+
+    
+{{/if}} 
+
+
+
