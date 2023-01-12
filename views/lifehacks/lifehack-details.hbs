@@ -2,17 +2,17 @@
     <div class="row">
         <div class="col">
             <div class="card h-100">
-                <h2 class="card-header">{{title}}</h2>
+                <h2 class="card-header">{{lifehack.title}}</h2>
                 <div class="card-body">
-                    {{description}}
+                    {{lifehack.description}}
                 </div>
                 <div class="card-body">
-                    <img src="{{embedMultimedia}}" alt="{{title}}" class="w-100">
+                    <img src="{{lifehack.embedMultimedia}}" alt="{{lifehack.title}}" class="w-100">
                 </div>
                 {{!-- video display --}}
                            
-               {{#if videoUrl}}
-                    <iframe width="436" height="245" src="{{videoUrl}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+               {{#if lifehack.videoUrl}}
+                    <iframe width="436" height="245" src="{{lifehack.videoUrl}}" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                {{/if}}
                 {{!-- video display --}}
 
@@ -20,17 +20,17 @@
 
                 <div class="card-body btm-lh-display w-100">
                     <div class="btm-item">
-                        <form action="/lifehacks/{{this._id}}" method="POST">
-                            <button class="likes"><span class="badge">{{likes}}</span></button>
+                        <form action="/lifehacks/{{lifehack._id}}" method="POST">
+                            <button class="likes"><span class="badge">{{lifehack.likes}}</span></button>
                         </form>
                     </div>
                     <div class="btm-item">
-                        {{#each tags}}
+                        {{#each lifehack.tags}}
                             <span><a href="/tags/{{this._id}}" class="tags"># {{this.name}}</a></span>
                         {{/each}}
                     </div>
                     <div class="btm-item align-r">
-                        <h6 class="grey">Submitted by: {{author.username}}</h6>
+                        <h6 class="grey">Submitted by: {{lifehack.author.username}}</h6>
                         {{#equalOrTrue userDetails._id author._id userDetails.isAdmin}}
                             <a href="/lifehacks/{{this._id}}/edit" class="btn edit">Edit</a>
                             <form action="/lifehacks/{{this._id}}/delete" method="POST">
@@ -43,3 +43,35 @@
         </div>
     </div>
 </div>
+{{#equalOrTrue userDetails._id userDetails._id userDetails.isAdmin}}
+    
+    <div>
+        <form action="/lifehacks/{{lifehack._id}}/addcomment" method="POST">
+            <label>add a comment...
+                <textarea name="comment"  cols="40" rows="3" required></textarea>
+                <input type="text" name="lifehackId" value="{{lifehack._id}}" hidden>
+            </label>
+        <button>Comment</button>
+        </form>
+
+    </div>
+{{/equalOrTrue}}
+{{#if commentsArray}}
+<div>
+    {{#each commentsArray}}
+    <div>
+        <p>{{this.commentAuthor.username}}</p>
+        <p>{{this.commentText}}</p>
+        
+        {{#equalOrTrue ../userDetails._id this.commentAuthor._id ../userDetails.isAdmin}}
+            {{!-- <a href="/comments/{{this._id}}/edit">Edit</a> --}}
+            <form action="/comments/{{this._id}}/delete" method="POST">
+            <button>Delete</button>
+            </form>
+        {{/equalOrTrue}}
+        
+    </div>
+    {{/each}}
+</div>
+{{/if}}
+

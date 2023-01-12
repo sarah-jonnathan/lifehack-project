@@ -3,6 +3,7 @@ const app =require("../app")
 const Lifehack = require("../models/Lifehack.model")
 const User = require("../models/User.model")
 const Tag = require("../models/Tag.model")
+const Comment = require("../models/Comment.model")
 
 // ********* require fileUploader in order to use it *********
 const fileUploader = require('../config/cloudinary.config');
@@ -97,17 +98,23 @@ router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
 
 
 router.get("/lifehacks/random-lifehack",(req,res,next)=>{
-
+    let commentsArray=[]
+    let lifehack
     Lifehack.countDocuments()
         .then(numberOfLifehacks=>{
             const randomNum =Math.floor(Math.random()*numberOfLifehacks)
 
             return Lifehack.find().skip(randomNum).limit(1).populate(["tags","author"])
         })
-        .then((randomLifehack)=>{
-
-            res.render("lifehacks/lifehack-details",randomLifehack[0])
-
+        .then(randomLifehack=>{
+          lifehack=randomLifehack[0]
+          const lifehackId=lifehack._id.toString()
+          console.log(`lifehack===>`,lifehackId)
+          return Comment.find({ commentParent: lifehackId }).populate(["commentParent","commentAuthor"])
+        })
+        .then(responseComment=>{
+          commentsArray=responseComment.reverse()
+          res.render("lifehacks/lifehack-details",{lifehack,commentsArray})
         })
         .catch(error=>{
             console.log(`there was an error getting a Random Lifehack`,error)
@@ -116,11 +123,17 @@ router.get("/lifehacks/random-lifehack",(req,res,next)=>{
 })
 //read: display details of a LH
 router.get("/lifehacks/:lifehackId",(req,res,next)=>{
+    let commentsArray=[]
+    let lifehack
     const lifehackId = req.params.lifehackId
     Lifehack.findById(lifehackId).populate(["tags","author"])
-        .then(lifehack=>{
-            
-            res.render("lifehacks/lifehack-details",lifehack)
+        .then(responseLifehack=>{
+            lifehack=responseLifehack
+            return Comment.find({ commentParent: lifehackId }).populate(["commentParent","commentAuthor"])
+          })
+        .then(responseComment=>{
+          commentsArray=responseComment.reverse()
+          res.render("lifehacks/lifehack-details",{lifehack,commentsArray})
         })
         .catch(error=>{
             console.log("there has been an error getting the details of the LH==>",error)
@@ -312,4 +325,36 @@ router.post(`/lifehacks/:lifehackId`, (req, res, next) => {
     }
 });
 
+
+
+router.post(`/lifehacks/:lifehackId/addcomment`,isLoggedIn, (req, res, next) => {
+  
+  const commentText = req.body.comment
+  const lifehackId = req.body.lifehackId.toString()
+  const commentAuthor= req.session.currentUser._id.toString()
+  
+  Comment.create({
+    commentParent:lifehackId,
+    commentAuthor,
+    commentText
+  })
+    .then(response=>{
+      console.log(`comment created`)
+      res.redirect(`/lifehacks/${lifehackId}`)
+    })
+    .catch(error=>{
+      console.log(`there has been an error creating a comment`,error)
+    })
+
+})
+router.post("/comments/:commentId/delete",isLoggedIn,(req,res,next)=>{
+  const commentId = req.params.commentId
+
+  Comment.findByIdAndDelete(commentId)
+    .then(responseComment=>{
+      console.log(`the comment has been deleted`)
+      res.redirect(`/lifehacks/${responseComment.commentParent}`)
+    })
+    .catch()
+})
 module.exports = router;
