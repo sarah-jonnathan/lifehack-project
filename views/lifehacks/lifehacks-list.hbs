@@ -6,25 +6,26 @@
     {{/if}}
 
 
-    <div class="container max-xl-1200px content-row">
+    <div class="container max-xl-1200px content-row mt-4">
         <div class="row">
 
     {{#each allLH}}
         <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                
-                    <img src="{{this.embedMultimedia}}" alt="{{this.name}}" class="card-img-top ratio ratio-1x1">
-
+            <div class="card h-100 carousel-bdr">
+                <a href="/lifehacks/{{this._id}}">
+                    <img src="{{this.embedMultimedia}}" alt="{{this.name}}" class="card-img-top ratio ratio-1x1 carousel-bdr">
+                </a>
                 <div class="card-body d-flex flex-column">
-                    <h4 class="grey text-truncate">{{this.title}}</h3>
+                    <a href="/lifehacks/{{this._id}}">
+                        <h4 class="grey text-truncate">{{this.title}}</h4>
+                    </a>
                 </div>
                 <div class="card-tag">
                 {{#each tags}}
                     <span><a href="/tags/{{this._id}}" class="tags"> #{{this.name}} </a></span>
                 {{/each}}
                 </div>
-                <div class="card-body">
-                    <a href="/lifehacks/{{this._id}}" class="btn">More</a>
+                <div class="card-body text-right">
                 {{#equalOrTrue ../userDetails._id this.author ../userDetails.isAdmin}}
                     <a href="/lifehacks/{{this._id}}/edit" class="btn edit">Edit</a>
                 {{/equalOrTrue}}
