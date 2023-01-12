@@ -16,7 +16,7 @@
         <a class="navbar-brand" href="/">
           <img src="https://res.cloudinary.com/dsw3axyzs/image/upload/v1673092584/raccoon7_wrzwm2.png" alt="Logo" width="30" height="24"
             class="d-inline-block align-text-top">
-          Raccoons to the Rescue
+          Lifehacks
         </a>
         <!-- Creates Dropdown icon with links when in Smaller screen size -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -27,14 +27,14 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav me-auto my-2 my-lg-0 justify-content-end">
             <li class="nav-item">
-              <a class="nav-link" href="/lifehacks">Lifehacks</a>
+              <a class="nav-link text-dark" href="/lifehacks">Lifehacks</a>
             </li>
              <li class="nav-item">
-              <a class="nav-link" href="/lifehacks/random-lifehack">Random Lifehack</a>
+              <a class="nav-link text-dark" href="/lifehacks/random-lifehack">Random Lifehack</a>
             </li>
             {{#if userDetails}}
               <li class="nav-item">
-                <a class="nav-link" href="/lifehacks/create">Add a Lifehack</a>
+                <a class="nav-link text-dark" href="/lifehacks/create">Add a Lifehack</a>
               </li>
             {{/if}}
             <!-- If Tags show dropdown -->
@@ -46,13 +46,13 @@
                 <!-- Display Array of Tags -->
                 {{#each tagsArray}}
                   <li class="dropdown-item">
-                    <a class="nav-link" href="/tags/{{this._id}}">{{this.name}}</a>
+                    <a class="nav-link text-dark" href="/tags/{{this._id}}">{{this.name}}</a>
                   </li>
                 {{/each}}
                 {{#if userDetails.isAdmin}}
                   <li><hr class="dropdown-divider"></li>
                   <li class="dropdown-item">
-                    <a class="nav-link" href="/tags">View All Tags</a>
+                    <a class="nav-link text-dark" href="/tags">View All Tags</a>
                   </li>
                 {{/if}}
               </ul>
@@ -60,17 +60,17 @@
             <li><hr class="dropdown-divider"></li>
             {{#if userDetails}}
               <li class="nav-item">
-                <a class="nav-link" href="/profile">Profile</a>
+                <a class="nav-link text-dark" href="/profile">My Profile</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link btn logout" href="/logout">Logout</a>
               </li>
             {{else}}
               <li class="nav-item">
-                <a class="nav-link" href="/signup">Register</a>
+                <a class="nav-link text-dark" href="/signup">Register</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link text-dark" href="/login">Login</a>
               </li>
             {{/if}}
           </ul>
