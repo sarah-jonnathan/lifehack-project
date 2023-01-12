@@ -245,7 +245,7 @@ router.post("/lifehacks/:lifehackId/edit",
       //we are uploading a new video
 
       let cloudinaryVideoID = getCloudinaryIDfromUrl(lastVideoUrl);
-      deleteFileFromCloudinary(cloudinaryVideoID);
+      deleteFileFromCloudinary(cloudinaryVideoID,'video');
     }
 
     const newLifehackData = {
