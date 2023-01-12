@@ -113,6 +113,7 @@ a.edit:hover, .edit:hover {
 }
 
 a.logout:link, a.logout:visited, a.logout:active {
+  display: block;
   color: #fff !important;
   font-size: 1em;
   align-self: center;

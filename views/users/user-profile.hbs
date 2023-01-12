@@ -6,22 +6,20 @@
 
     {{#each lifehacksPosted }}
     <div class="row prof-lh-likes p-1 mb-1 carousel-bdr">
-        <div class="col-3 my-auto">
+        <div class="col-md-3 my-auto">
             <a href="/lifehacks/{{this._id}}">
                 <img class="thumb-img img-fluid" src="{{this.embedMultimedia}}" alt="{{this.title}}">
             </a>
         </div>
-        <div class="col my-auto text-truncate">
+        <div class="col-md-6 my-auto text-truncate">
             <a href="/lifehacks/{{this._id}}">
                 {{this.title}}
             </a>
         </div>
-        <div class="col-1 align-r mt-3">
+        <div class="col-md-2 my-auto align-r mt-3 btn-group">
             <form action="/lifehacks/{{this._id}}/edit" method="get">
                 <button type="submit" class="btn edit2">Edit</button>
             </form>
-        </div>
-        <div class="col-1 align-l mt-3 mr-3">
             <form action="/lifehacks/{{this._id}}/delete" method="post">
                 <button type="submit" class="btn delete">Delete</button>
             </form>
@@ -36,17 +34,17 @@
 
     {{#each lifehacksLiked}}
     <div class="row prof-lh-likes p-1 mb-1 carousel-bdr">
-        <div class="col-3 my-auto">
+        <div class="col-md-3 my-auto">
             <a href="/lifehacks/{{this._id}}">
                 <img class="thumb-img img-fluid" src="{{this.embedMultimediaLike}}" alt="{{this.title}}">
             </a>
         </div>
-        <div class="col my-auto text-truncate">
+        <div class="col-md my-auto text-truncate">
             <a href="/lifehacks/{{this._id}}">
                 {{this.titleLike}}
             </a>
         </div>
-        <div class="col-2 my-auto align-r">
+        <div class="col-md-2 my-auto align-r">
             <form action="/lifehacks/{{this._id}}" method="POST">
                 <button class="likes"><span class="badge2">Remove</span></button>
             </form>
