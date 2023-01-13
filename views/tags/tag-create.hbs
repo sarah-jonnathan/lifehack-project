@@ -1,7 +1,7 @@
 {{!-- views/tags/tag-create.hbs --}}
 
 <div class="container prof-lh-likes p-3 mb-1">
-  <form id="form-lh" action="/tags/{{tagDetails._id}}/edit" method="post" enctype="multipart/form-data">
+  <form id="form-lh" action="/tags/create" method="post" enctype="multipart/form-data">
     
     <div class="row">
       <div class="col-6 my-auto align-items-start">
@@ -35,7 +35,7 @@
     <div class="row mb-3">
       <div class="col-sm my-auto align-r">&nbsp;</div>
       <div class="col-sm-2 my-auto align-r">
-        <button  id="create" type="submit" class="btn edit">Edit</button>
+        <button  id="create" type="submit" class="btn edit">Create</button>
         <a href="/tags" class="btn cancel">Cancel</a>
       </div>
     </div>
