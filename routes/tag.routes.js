@@ -90,7 +90,7 @@ router.get("/tags/:tagId/edit", isLoggedIn, isAdmin, (req, res, next) => {
 router.post("/tags/:tagId/edit", isLoggedIn, isAdmin, fileUploader.single('img'), (req, res, next) => {
   const tagId = req.params.tagId;
   const { name} = req.body;
-  
+  let oldImgPath
   
   
   const imgFilePath = req.file ? req.file.path: null;
@@ -103,8 +103,22 @@ router.post("/tags/:tagId/edit", isLoggedIn, isAdmin, fileUploader.single('img')
     });
   } else {
     
-    Tag.findByIdAndUpdate(tagId, {name, img: imgFilePath })
-    .then(() => res.redirect(`/tags`))
+    Tag.findByIdAndUpdate(tagId, {name, img: imgFilePath },{new: false})
+    .then((responseTag) => {
+      oldImgPath=responseTag.img
+      
+
+      return Lifehack.updateMany({ embedMultimedia: oldImgPath },{ $set: { "embedMultimedia.0": imgFilePath } })
+    })
+    .then(responseLifehacks=>{
+      lifehacksUpdated=responseLifehacks
+      
+      
+      
+
+
+      res.redirect(`/tags`)
+    })
     .catch((error) => {
       console.log("Error updating Tag", error);
     });
