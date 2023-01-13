@@ -399,6 +399,22 @@ label {
 
 /***** vvv FOR 'Comments' Bubble vvv *****/
 /* BOX */
+.comment-author {
+  color: rgb(255, 255, 255);
+  background: #93030367;
+  position: relative;
+  /* padding: 10px 10px 0 10px; */
+  border-radius: 6px;
+  max-width: fit-content;
+  clear: all;
+  box-shadow: rgba(0, 0, 0, .3) 0 5px 15px;
+  z-index: -1;
+} 
+.comment-author::after {
+  content: "";
+  border: 20px solid transparent;
+  position: absolute;
+}
 .comment {
   color: #222;
   background: #ffffff;
@@ -408,6 +424,11 @@ label {
   max-width: 100%;
   clear: all;
   box-shadow: rgba(0, 0, 0, .3) 0 5px 15px;
+}
+@media (max-width: 600px) {
+  .comment {
+    max-width: 65%;
+  }
 }
 
 /* Different Warning tail positions */

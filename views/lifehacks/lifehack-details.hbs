@@ -97,13 +97,13 @@
                 {{#each commentsArray}}
                 <div class="row">
                     <div class="col-sm comment right m-2">
-                        <p>{{this.commentText}}</p>
+                        <p><b>{{this.commentText}}</b></p>
                     </div>
-                    <div class="col-sm-2 my-auto text-right">
-                        <p class="mt-3 ml-3">{{this.commentAuthor.username}}</p>
+                    <div class="col-sm-2 my-auto text-right comment-author">
+                        <p class="m-1">{{this.commentAuthor.username}}</p>
                     </div>
                     {{#equalOrTrue ../userDetails._id this.commentAuthor._id ../userDetails.isAdmin}}
-                    <div class="col-sm-1 my-auto text-right">
+                    <div class="col-sm-1 my-auto ">
                         <form action="/comments/{{this._id}}/delete" method="POST">
                             {{!-- <a href="/comments/{{this._id}}/edit">Edit</a> --}}
                             <button class="btn delete"><b>X</b></button>
