@@ -5,7 +5,7 @@ html {
 }
 
 body {
-  padding: 30px 20px;
+  padding: 60px 20px 30px;
   font: 14px "Quicksand", "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color:#7e7d7d48;
 }
@@ -104,6 +104,7 @@ a.btn:hover, .btn:hover {
 }
 
 .edit {
+  color: #fff !important;
   background-image: linear-gradient(#04c547, #039327);
 }
 
@@ -496,4 +497,22 @@ label {
   background-image:url(../images/utils/loading.gif); 
   background-size: contain;
   z-index: 5;
+}
+
+/***** VVV Lifehack team *****/
+.justin {
+  color: #fff !important;
+  background-image: linear-gradient(#04c547, #026d1d);
+}
+.judy {
+  color: #fff !important;
+  background-image: linear-gradient(#960eeb, #7d0393);
+}
+.john {
+  color: #fff !important;
+  background-image: linear-gradient(#0eb8eb, #034493);
+}
+.steven {
+  color: #fff !important;
+  background-image: linear-gradient(#ebca0e, #936c03);
 }

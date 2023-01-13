@@ -56,9 +56,9 @@ const app = express();
 require("./config")(app);
 const getTags = require("./middleware/getTags")
 const capitalize = require("./utils/capitalize");
-const projectName = "Raccoons to the Rescue";
+const projectName = "Lifehacks by Rescue Raccoons";
 
-app.locals.appTitle = `${capitalize(projectName)}`;
+app.locals.appTitle = `${projectName}`;
 
 
 
