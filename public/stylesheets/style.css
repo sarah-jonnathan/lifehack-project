@@ -500,11 +500,15 @@ label {
 }
 
 /***** VVV Lifehack team *****/
-.kyle {
+.justin {
   color: #fff !important;
   background-image: linear-gradient(#04c547, #039327);
 }
-.amber {
+.judy {
   color: #fff !important;
   background-image: linear-gradient(#960eeb, #7d0393);
+}
+.john {
+  color: #fff !important;
+  background-image: linear-gradient(#0eb8eb, #034493);
 }
