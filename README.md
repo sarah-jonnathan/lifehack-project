@@ -23,11 +23,15 @@
 
 To install the project, please fork the repository and run `npm install` in the terminal.
 You will also need to create an account with Cloudinary and set the following environment variables in the .env file.
+
 PORT  
 SESSION_SECRET  
+
 CLOUDINARY_NAME  
 CLOUDINARY_KEY  
 CLOUDINARY_SECRET
+CLOUDINARY_CONTAINING_FOLDER = "theNameOfYourFolder"
+
 
 ##### Running the application  
 
