@@ -1,215 +1,243 @@
 const router = require("express").Router();
-const app =require("../app")
-const Lifehack = require("../models/Lifehack.model")
-const User = require("../models/User.model")
-const Tag = require("../models/Tag.model")
-const Comment = require("../models/Comment.model")
+const app = require("../app");
+const Lifehack = require("../models/Lifehack.model");
+const User = require("../models/User.model");
+const Tag = require("../models/Tag.model");
+const Comment = require("../models/Comment.model");
 
 // ********* require fileUploader in order to use it *********
-const fileUploader = require('../config/cloudinary.config');
-const cloudinary = require('cloudinary').v2;
+const fileUploader = require("../config/cloudinary.config");
+const cloudinary = require("cloudinary").v2;
 
 //require middleware functions
-const isLoggedIn = require("../middleware/isLoggedIn")
-const urlImgValidator = require("../middleware/urlImgValidator")
-const isLifeHackAuthoredByUser = require("../middleware/isLifehackAuthoredByUser")
-const getDefaultImg =require("../middleware/getDefaultImg")
+const isLoggedIn = require("../middleware/isLoggedIn");
+const urlImgValidator = require("../middleware/urlImgValidator");
+const isLifeHackAuthoredByUser = require("../middleware/isLifehackAuthoredByUser");
+const getDefaultImg = require("../middleware/getDefaultImg");
 const fileUploadedValidator = require("../middleware/fileUploadedValidator");
-const isCommentAuthoredByUser =require("../middleware/isCommentAuthoredByUser")
+const isCommentAuthoredByUser = require("../middleware/isCommentAuthoredByUser");
 
 //require Utils
-const compareIds=require("../utils/compareIds")
-const getCloudinaryIDfromUrl=require("../utils/getCloudinaryIDfromUrl");
+const compareIds = require("../utils/compareIds");
+const getCloudinaryIDfromUrl = require("../utils/getCloudinaryIDfromUrl");
 const deleteFileFromCloudinary = require("../utils/deleteFileFromCloudinary");
-const isDefaultImage=require("../utils/isDefaultImage");
+const isDefaultImage = require("../utils/isDefaultImage");
 const removeImageUnlessTagDefault = require("../utils/removeImageUnlessTagDefault");
 
 // read: Display all LH
-router.get("/lifehacks",(req,res,next)=>{
-   
-    Lifehack.find().populate("tags")
-        .then((responseLifehack)=>{
-          const allLH =responseLifehack.reverse()
-                      
-            res.render("lifehacks/lifehacks-list",{
-                allLH,
-                fromAllList:true
-            })
-        })
-        .catch(error=>console.log(`there was an error getting all the LF...`,error))
-})
+router.get("/lifehacks", (req, res, next) => {
+  Lifehack.find()
+    .populate("tags")
+    .then((responseLifehack) => {
+      const allLH = responseLifehack.reverse();
+
+      res.render("lifehacks/lifehacks-list", {
+        allLH,
+        fromAllList: true,
+      });
+    })
+    .catch((error) =>
+      console.log(`there was an error getting all the LF...`, error)
+    );
+});
 
 //read: create new lH form
-router.get("/lifehacks/create",isLoggedIn,(req,res,next)=>{
-
-    Tag.find()
-        .then(tagsArray=>{
-            
-            res.render("lifehacks/lifehack-create",{tagsArray})
-        })
-        .catch(error=>{
-            console.log("there has been an error getting the tags===>",error)
-        })
-})
+router.get("/lifehacks/create", isLoggedIn, (req, res, next) => {
+  Tag.find()
+    .then((tagsArray) => {
+      res.render("lifehacks/lifehack-create", { tagsArray });
+    })
+    .catch((error) => {
+      console.log("there has been an error getting the tags===>", error);
+    });
+});
 // post: create new lH in DB
 
- router.post("/lifehacks/create",
-   isLoggedIn,
-   fileUploader.fields([
-     { name: "image01", maxCount: 1 },
-     { name: "video01", maxCount: 1 },
-   ]),
-   fileUploadedValidator,
-   urlImgValidator,
-   getDefaultImg,
-   (req, res, next) => {
-     const userInSession = req.session.currentUser;
-     const totalTagsArray= res.locals.tagsArray
-     //store img link of cloudinary
-     let imageUploadUrl = req.files.image01 ? req.files.image01[0].path : null;
+router.post(
+  "/lifehacks/create",
+  isLoggedIn,
+  fileUploader.fields([
+    { name: "image01", maxCount: 1 },
+    { name: "video01", maxCount: 1 },
+  ]),
+  fileUploadedValidator,
+  urlImgValidator,
+  getDefaultImg,
+  (req, res, next) => {
+    const userInSession = req.session.currentUser;
+    const totalTagsArray = res.locals.tagsArray;
+    //store img link of cloudinary
+    let imageUploadUrl = req.files.image01 ? req.files.image01[0].path : null;
 
-     let videoUploadUrl = req.files.video01 ? req.files.video01[0].path : null;
-    if(!req.body.tags){
-      req.body.tags=totalTagsArray[totalTagsArray.length-1]._id.toString()
-      
+    let videoUploadUrl = req.files.video01 ? req.files.video01[0].path : null;
+    if (!req.body.tags) {
+      req.body.tags = totalTagsArray[totalTagsArray.length - 1]._id.toString();
     }
-    
-         const newLifehackData = {
-           title: req.body.title,
-           description: req.body.description,
-           embedMultimedia:
-             imageUploadUrl || req.body.embedMultimedia || res.locals.defaultImgUrl,
-           tags: req.body.tags,
-           videoUrl: videoUploadUrl,
-           author: userInSession._id,
-         };
 
-     Lifehack.create(newLifehackData)
-       .then((newLifehack) => {
-         res.redirect(`/lifehacks/${newLifehack._id}`);
-        
-       })
-       .catch((error) => {
-         console.log(
-           "there has been an error creating the lifehack===>",
-           error
-         );
-       });
-   }
- );
+    const newLifehackData = {
+      title: req.body.title,
+      description: req.body.description,
+      embedMultimedia:
+        imageUploadUrl || req.body.embedMultimedia || res.locals.defaultImgUrl,
+      tags: req.body.tags,
+      videoUrl: videoUploadUrl,
+      author: userInSession._id,
+    };
 
+    Lifehack.create(newLifehackData)
+      .then((newLifehack) => {
+        res.redirect(`/lifehacks/${newLifehack._id}`);
+      })
+      .catch((error) => {
+        console.log("there has been an error creating the lifehack===>", error);
+      });
+  }
+);
 
-router.get("/lifehacks/random-lifehack",(req,res,next)=>{
-    const totalTagsArray= res.locals.tagsArray
-    let hasVideoAndDefaultImage
-    let commentsArray=[]
-    let lifehack
-    Lifehack.countDocuments()
-        .then(numberOfLifehacks=>{
-            const randomNum =Math.floor(Math.random()*numberOfLifehacks)
+router.get("/lifehacks/random-lifehack", (req, res, next) => {
+  const totalTagsArray = res.locals.tagsArray;
+  let hasVideoAndDefaultImage;
+  let commentsArray = [];
+  let lifehack;
+  Lifehack.countDocuments()
+    .then((numberOfLifehacks) => {
+      const randomNum = Math.floor(Math.random() * numberOfLifehacks);
 
-            return Lifehack.find().skip(randomNum).limit(1).populate(["tags","author"])
-        })
-        .then(randomLifehack=>{
-          lifehack=randomLifehack[0]
-          const lifehackId=lifehack._id.toString()
+      return Lifehack.find()
+        .skip(randomNum)
+        .limit(1)
+        .populate(["tags", "author"]);
+    })
+    .then((randomLifehack) => {
+      lifehack = randomLifehack[0];
+      const lifehackId = lifehack._id.toString();
 
-          //checking if the image of the lH is a default img and if the lh has a video
-          const lifehackImgUrl=lifehack.embedMultimedia[0]
-          const isDefaultImageValue = isDefaultImage(lifehackImgUrl,totalTagsArray)
-          hasVideoAndDefaultImage= (isDefaultImageValue && lifehack.videoUrl )? true:false;
+      //checking if the image of the lH is a default img and if the lh has a video
+      const lifehackImgUrl = lifehack.embedMultimedia[0];
+      const isDefaultImageValue = isDefaultImage(
+        lifehackImgUrl,
+        totalTagsArray
+      );
+      hasVideoAndDefaultImage =
+        isDefaultImageValue && lifehack.videoUrl ? true : false;
 
-          
-          return Comment.find({ commentParent: lifehackId }).populate(["commentParent","commentAuthor"])
-        })
-        .then(responseComment=>{
-          commentsArray=responseComment.reverse()
-          let showRandomBtn = true;
-          res.render("lifehacks/lifehack-details",{lifehack,commentsArray, showRandomBtn,hasVideoAndDefaultImage})
-        })
-        .catch(error=>{
-            console.log(`there was an error getting a Random Lifehack`,error)
-            next(error)
-        })
-})
+      return Comment.find({ commentParent: lifehackId }).populate([
+        "commentParent",
+        "commentAuthor",
+      ]);
+    })
+    .then((responseComment) => {
+      commentsArray = responseComment.reverse();
+      let showRandomBtn = true;
+      res.render("lifehacks/lifehack-details", {
+        lifehack,
+        commentsArray,
+        showRandomBtn,
+        hasVideoAndDefaultImage,
+      });
+    })
+    .catch((error) => {
+      console.log(`there was an error getting a Random Lifehack`, error);
+      next(error);
+    });
+});
 //read: display details of a LH
-router.get("/lifehacks/:lifehackId",(req,res,next)=>{
-    const totalTagsArray= res.locals.tagsArray
-    let hasVideoAndDefaultImage  
-    let commentsArray=[]
-    let lifehack
-    const lifehackId = req.params.lifehackId
-    Lifehack.findById(lifehackId).populate(["tags","author"])
-        .then(responseLifehack=>{
-            lifehack=responseLifehack
+router.get("/lifehacks/:lifehackId", (req, res, next) => {
+  const totalTagsArray = res.locals.tagsArray;
+  let hasVideoAndDefaultImage;
+  let commentsArray = [];
+  let lifehack;
+  const lifehackId = req.params.lifehackId;
+  Lifehack.findById(lifehackId)
+    .populate(["tags", "author"])
+    .then((responseLifehack) => {
+      lifehack = responseLifehack;
 
-            //checking if the image of the lH is a default img and if the lh has a video
-            const lifehackImgUrl=lifehack.embedMultimedia[0]
-            const isDefaultImageValue = isDefaultImage(lifehackImgUrl,totalTagsArray)
-            hasVideoAndDefaultImage= (isDefaultImageValue && lifehack.videoUrl )? true:false;
+      //checking if the image of the lH is a default img and if the lh has a video
+      const lifehackImgUrl = lifehack.embedMultimedia[0];
+      const isDefaultImageValue = isDefaultImage(
+        lifehackImgUrl,
+        totalTagsArray
+      );
+      hasVideoAndDefaultImage =
+        isDefaultImageValue && lifehack.videoUrl ? true : false;
 
-
-            
-            return Comment.find({ commentParent: lifehackId }).populate(["commentParent","commentAuthor"])
-          })
-        .then(responseComment=>{
-          commentsArray=responseComment.reverse()
-          res.render("lifehacks/lifehack-details",{lifehack,commentsArray,hasVideoAndDefaultImage})
-        })
-        .catch(error=>{
-            console.log("there has been an error getting the details of the LH==>",error)
-        })
-
-})
+      return Comment.find({ commentParent: lifehackId }).populate([
+        "commentParent",
+        "commentAuthor",
+      ]);
+    })
+    .then((responseComment) => {
+      commentsArray = responseComment.reverse();
+      res.render("lifehacks/lifehack-details", {
+        lifehack,
+        commentsArray,
+        hasVideoAndDefaultImage,
+      });
+    })
+    .catch((error) => {
+      console.log(
+        "there has been an error getting the details of the LH==>",
+        error
+      );
+    });
+});
 //read: display edit form
-router.get("/lifehacks/:lifehackId/edit",isLoggedIn,isLifeHackAuthoredByUser,(req,res,next)=>{
-    const lifehackId = req.params.lifehackId
-    const userDetails = req.session.currentUser
+router.get(
+  "/lifehacks/:lifehackId/edit",
+  isLoggedIn,
+  isLifeHackAuthoredByUser,
+  (req, res, next) => {
+    const lifehackId = req.params.lifehackId;
+    const userDetails = req.session.currentUser;
 
-
-    const data = {}
-    Lifehack.findById(lifehackId).populate("tags")
-    .then(lifehack=>{
-        data.lifehack=lifehack   
+    const data = {};
+    Lifehack.findById(lifehackId)
+      .populate("tags")
+      .then((lifehack) => {
+        data.lifehack = lifehack;
 
         //we storage this here to compare in the post request
-        req.session.urlImgCloudinary = data.lifehack.embedMultimedia[0]
-        req.session.urlVideoCloudinary =data.lifehack.videoUrl
-        
+        req.session.urlImgCloudinary = data.lifehack.embedMultimedia[0];
+        req.session.urlVideoCloudinary = data.lifehack.videoUrl;
 
-          return Tag.find() 
-        })
-        .then(tagsArray=>{
-            data.tagsArray=tagsArray
+        return Tag.find();
+      })
+      .then((tagsArray) => {
+        data.tagsArray = tagsArray;
 
-            const tagsNotSelected = tagsArray.filter((tag) => {
-                let counter = 0;
-                data.lifehack.tags.forEach((tagSelected) => {
-                  if (tag._id.toString() ===  tagSelected._id.toString()) {
-                    counter++;
-                  }
-                });
-                if (counter >= 1) {
-                  return false;
-                } else {
-                  return true;
-                }
-              });
-              
-            data.tagsNotSelected= tagsNotSelected
-            
-            res.render("lifehacks/lifehack-edit",data)
-        })
-        .catch(error=>{
-            console.log("there has been an error in the get request to edit the LH==>",error)
-            
-            next(error)
-        })
+        const tagsNotSelected = tagsArray.filter((tag) => {
+          let counter = 0;
+          data.lifehack.tags.forEach((tagSelected) => {
+            if (tag._id.toString() === tagSelected._id.toString()) {
+              counter++;
+            }
+          });
+          if (counter >= 1) {
+            return false;
+          } else {
+            return true;
+          }
+        });
 
-})
+        data.tagsNotSelected = tagsNotSelected;
+
+        res.render("lifehacks/lifehack-edit", data);
+      })
+      .catch((error) => {
+        console.log(
+          "there has been an error in the get request to edit the LH==>",
+          error
+        );
+
+        next(error);
+      });
+  }
+);
 
 //post: update LH in DB
-router.post("/lifehacks/:lifehackId/edit",
+router.post(
+  "/lifehacks/:lifehackId/edit",
   isLoggedIn,
   isLifeHackAuthoredByUser,
   fileUploader.fields([
@@ -233,19 +261,17 @@ router.post("/lifehacks/:lifehackId/edit",
 
     //checks if we are  uploading a new image
     if (req.files.image01 || req.body.embedMultimedia !== lastImageUrl) {
-
-      
       //we are uploading a new image
 
       removeImageUnlessTagDefault(lastImageUrl, tagsObjArray);
     }
     //checks if we are uploading a new video
-    
+
     if (req.files.video01) {
       //we are uploading a new video
 
       let cloudinaryVideoID = getCloudinaryIDfromUrl(lastVideoUrl);
-      deleteFileFromCloudinary(cloudinaryVideoID,'video');
+      deleteFileFromCloudinary(cloudinaryVideoID, "video");
     }
 
     const newLifehackData = {
@@ -266,116 +292,127 @@ router.post("/lifehacks/:lifehackId/edit",
       });
   }
 );
-router.post(`/lifehacks/:lifehackId/delete`,isLoggedIn,isLifeHackAuthoredByUser,(req,res,next)=>{
-    const lastUrl= req.headers.referer
-    const lifehackId=req.params.lifehackId
-    const tagsObjArray=res.locals.tagsArray
-    let lastImageUrl=''
-    let lastVideoUrl=''
-    
-               
-        Lifehack.findByIdAndDelete(lifehackId)
-        .then((response)=>{
-            lastImageUrl=response.embedMultimedia[0]
-            lastVideoUrl=response.videoUrl
-            
-            
-            removeImageUnlessTagDefault(lastImageUrl,tagsObjArray)
+router.post(
+  `/lifehacks/:lifehackId/delete`,
+  isLoggedIn,
+  isLifeHackAuthoredByUser,
+  (req, res, next) => {
+    const lastUrl = req.headers.referer;
+    const lifehackId = req.params.lifehackId;
+    const tagsObjArray = res.locals.tagsArray;
+    let lastImageUrl = "";
+    let lastVideoUrl = "";
 
-            let cloudinaryVideoID = getCloudinaryIDfromUrl(lastVideoUrl)
-            
-            if(lastVideoUrl){deleteFileFromCloudinary(cloudinaryVideoID,`video`)}
-            
+    Lifehack.findByIdAndDelete(lifehackId)
+      .then((response) => {
+        lastImageUrl = response.embedMultimedia[0];
+        lastVideoUrl = response.videoUrl;
 
-            
-           
-            
-            if(lastUrl.endsWith(`profile`)){
-                res.redirect(lastUrl)
-                
-            }else{
-                res.redirect("/lifehacks")
-            }
+        removeImageUnlessTagDefault(lastImageUrl, tagsObjArray);
 
-        })
-        .catch(error=>{
-            console.log(`there has been an error deleting the LH==>`,error)
-        })
-})
+        let cloudinaryVideoID = getCloudinaryIDfromUrl(lastVideoUrl);
 
+        if (lastVideoUrl) {
+          deleteFileFromCloudinary(cloudinaryVideoID, `video`);
+        }
+
+        if (lastUrl.endsWith(`profile`)) {
+          res.redirect(lastUrl);
+        } else {
+          res.redirect("/lifehacks");
+        }
+      })
+      .catch((error) => {
+        console.log(`there has been an error deleting the LH==>`, error);
+      });
+  }
+);
 
 router.post(`/lifehacks/:lifehackId`, (req, res, next) => {
-    const lifehackId = req.params.lifehackId;
+  const lifehackId = req.params.lifehackId;
 
-    if (!req.session.currentUser) {
-        res.redirect(`/login`);
-    } else {
-        const userId =  req.session.currentUser._id;
-        // Check if this user has liked this LH
-        User.findById(userId)
-            .then((result) => {
-                const postsLikedArray = result.postsLiked;
-                const isLikedByUser = postsLikedArray.some(lhId => {
-                    if (lhId.toString() === lifehackId.toString()) {
-                        return true;
-                    }
-                })
-                // User has liked the post, remove from postsLiked array and remove 1 like
-                if (isLikedByUser === true) {
-                    const removeLhFromUser = User.findByIdAndUpdate({_id: userId}, {$pull: {postsLiked: lifehackId}});
-                    const removeLike = Lifehack.findByIdAndUpdate({_id: lifehackId}, {$inc: {likes: -1}});
-                    res.locals.warning = "You have already liked this post"; // not working now??
-                    Promise.all([removeLhFromUser, removeLike])
-                        .then((result) => {
-                            res.redirect(`/lifehacks/${lifehackId}`)
-                        })
-                } 
-                // User has NOT liked the post, add to DB AND increment
-                else {
-                    const addLhToUser = User.findByIdAndUpdate({_id: userId}, {$push: {postsLiked: lifehackId}});
-                    const addLike = Lifehack.findByIdAndUpdate({_id: lifehackId}, {$inc: {likes: 1}});
-                    Promise.all([addLhToUser, addLike])
-                        .then((result) => {
-                            res.redirect(`/lifehacks/${lifehackId}`)
-                        })
-                }
-            })
-            .catch(error => {
-                console.log(`There has been an error updating the likes in the DB`, error);
-            })
-    }
+  if (!req.session.currentUser) {
+    res.redirect(`/login`);
+  } else {
+    const userId = req.session.currentUser._id;
+    // Check if this user has liked this LH
+    User.findById(userId)
+      .then((result) => {
+        const postsLikedArray = result.postsLiked;
+        const isLikedByUser = postsLikedArray.some((lhId) => {
+          if (lhId.toString() === lifehackId.toString()) {
+            return true;
+          }
+        });
+        // User has liked the post, remove from postsLiked array and remove 1 like
+        if (isLikedByUser === true) {
+          const removeLhFromUser = User.findByIdAndUpdate(
+            { _id: userId },
+            { $pull: { postsLiked: lifehackId } }
+          );
+          const removeLike = Lifehack.findByIdAndUpdate(
+            { _id: lifehackId },
+            { $inc: { likes: -1 } }
+          );
+          res.locals.warning = "You have already liked this post"; // not working now??
+          Promise.all([removeLhFromUser, removeLike]).then((result) => {
+            res.redirect(`/lifehacks/${lifehackId}`);
+          });
+        }
+        // User has NOT liked the post, add to DB AND increment
+        else {
+          const addLhToUser = User.findByIdAndUpdate(
+            { _id: userId },
+            { $push: { postsLiked: lifehackId } }
+          );
+          const addLike = Lifehack.findByIdAndUpdate(
+            { _id: lifehackId },
+            { $inc: { likes: 1 } }
+          );
+          Promise.all([addLhToUser, addLike]).then((result) => {
+            res.redirect(`/lifehacks/${lifehackId}`);
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(
+          `There has been an error updating the likes in the DB`,
+          error
+        );
+      });
+  }
 });
 
+router.post(
+  `/lifehacks/:lifehackId/addcomment`,
+  isLoggedIn,
+  (req, res, next) => {
+    const commentText = req.body.comment;
+    const lifehackId = req.body.lifehackId.toString();
+    const commentAuthor = req.session.currentUser._id.toString();
 
-
-router.post(`/lifehacks/:lifehackId/addcomment`,isLoggedIn, (req, res, next) => {
-  
-  const commentText = req.body.comment
-  const lifehackId = req.body.lifehackId.toString()
-  const commentAuthor= req.session.currentUser._id.toString()
-  
-  Comment.create({
-    commentParent:lifehackId,
-    commentAuthor,
-    commentText
-  })
-    .then(response=>{
-      console.log(`comment created`)
-      res.redirect(`/lifehacks/${lifehackId}`)
+    Comment.create({
+      commentParent: lifehackId,
+      commentAuthor,
+      commentText,
     })
-    .catch(error=>{
-      console.log(`there has been an error creating a comment`,error)
-    })
-
-})
-router.post("/comments/:commentId/delete",isLoggedIn,(req,res,next)=>{
-  const commentId = req.params.commentId
+      .then((response) => {
+        console.log(`comment created`);
+        res.redirect(`/lifehacks/${lifehackId}`);
+      })
+      .catch((error) => {
+        console.log(`there has been an error creating a comment`, error);
+      });
+  }
+);
+router.post("/comments/:commentId/delete", isLoggedIn, (req, res, next) => {
+  const commentId = req.params.commentId;
 
   Comment.findByIdAndDelete(commentId)
-    .then(responseComment=>{
-      console.log(`the comment has been deleted`)
-      res.redirect(`/lifehacks/${responseComment.commentParent}`)
+    .then((responseComment) => {
+      console.log(`the comment has been deleted`);
+      res.redirect(`/lifehacks/${responseComment.commentParent}`);
     })
-    .catch()
-})
+    .catch();
+});
 module.exports = router;
