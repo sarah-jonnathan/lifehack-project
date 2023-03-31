@@ -53,7 +53,7 @@ router.get("/tags/:tagId", (req, res, next) => {
   Tag.findById(objectId)
     .then((response) => {
       tagObject = response;
-      return Lifehack.find({ tags: objectId }).populate("tags");
+      return Lifehack.find({ tags: objectId }).sort({ createdAt: -1 }).populate("tags");
     })
     .then((allLH) => {
       res.render("lifehacks/lifehacks-list", {
