@@ -51,8 +51,8 @@ router.get("/lifehacks/create", isLoggedIn, (req, res, next) => {
       console.log("there has been an error getting the tags===>", error);
     });
 });
-// post: create new lH in DB
 
+// post: create new lH in DB
 router.post(
   "/lifehacks/create",
   isLoggedIn,
@@ -141,6 +141,7 @@ router.get("/lifehacks/random-lifehack", (req, res, next) => {
       next(error);
     });
 });
+
 //read: display details of a LH
 router.get("/lifehacks/:lifehackId", (req, res, next) => {
   const totalTagsArray = res.locals.tagsArray;
@@ -182,6 +183,7 @@ router.get("/lifehacks/:lifehackId", (req, res, next) => {
       );
     });
 });
+
 //read: display edit form
 router.get(
   "/lifehacks/:lifehackId/edit",
@@ -328,6 +330,7 @@ router.post(
   }
 );
 
+// Check if user has liked the LH or not
 router.post(`/lifehacks/:lifehackId`, (req, res, next) => {
   const lifehackId = req.params.lifehackId;
 
@@ -383,6 +386,7 @@ router.post(`/lifehacks/:lifehackId`, (req, res, next) => {
   }
 });
 
+// Add a comment to a LH
 router.post(
   `/lifehacks/:lifehackId/addcomment`,
   isLoggedIn,
@@ -405,6 +409,8 @@ router.post(
       });
   }
 );
+
+// Delete a LH
 router.post("/comments/:commentId/delete", isLoggedIn, (req, res, next) => {
   const commentId = req.params.commentId;
 
